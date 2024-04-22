@@ -1,9 +1,15 @@
+import Hero from "./_components/Hero"
+import NowPlayingMovie from "./_components/NowPlayingMovie"
+import Shows from "./_components/Shows"
+import Movies from "./_components/Movies"
+
 const Home = () => {
   return (
     <>
-      <section className="h-screen">Current Showing Movie</section>
-      <section className="h-screen">Today Showing Movies</section>
-      <section className="h-screen">Upcoming Movies</section>
+      <Hero />
+      <NowPlayingMovie />
+      <Shows />
+      <Movies />
     </>
   )
 }

@@ -23,7 +23,7 @@ const Nav = () => {
     <>
       <nav
         className={clsx(
-          "sticky left-0 right-0 top-0 border-b bg-background transition-[padding] duration-500",
+          "sticky left-0 right-0 top-0 z-50 border-b bg-background transition-[padding] duration-500",
           direction == "up" && "py-4",
         )}>
         <div className="container flex items-center justify-between py-2">

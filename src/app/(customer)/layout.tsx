@@ -8,7 +8,7 @@ const Layout = ({
   return (
     <>
       <Nav />
-      <main className="container py-2">{children}</main>
+      <main>{children}</main>
     </>
   )
 }
