@@ -118,7 +118,7 @@ const SelectSeat = () => {
                             <div className="shrink-0">
                               {c.rows.map((row) => {
                                 return (
-                                  <div>
+                                  <div key={row.row}>
                                     {row.seats.map((seat) => (
                                       <ToggleGroupItem
                                         key={seat.id}
