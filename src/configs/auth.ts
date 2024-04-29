@@ -5,6 +5,30 @@ import db from "prisma/db"
 import { comparePassword } from "@/lib/password"
 import logger from "@/lib/logger"
 
+declare module "next-auth" {
+  interface User {
+    id: string
+    username: string
+    role: string
+  }
+
+  interface Session {
+    user: {
+      id: string
+      username: string
+      role: string
+    }
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string
+    username: string
+    role: string
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
@@ -46,4 +70,22 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user && user.id && user.username && user.role) {
+        token.id = user.id
+        token.username = user.username
+        token.role = user.role
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token && token.id && token.username && token.role) {
+        session.user.id = token.id
+        session.user.username = token.username
+        session.user.role = token.role
+      }
+      return session
+    },
+  },
 }

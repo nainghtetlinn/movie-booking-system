@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { withAuth } from "next-auth/middleware"
 
 import logger from "./lib/logger"
 
 export default withAuth(
-  (req: NextRequest) => {
+  (req) => {
+    logger.info("middleware > token > username ... ", req.nextauth.token?.username)
+    logger.info("middleware > token > role     ... ", req.nextauth.token?.role)
     return NextResponse.next()
   },
   {
@@ -17,5 +19,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: ["/dashboard/:path*", "/api/:path*"],
 }

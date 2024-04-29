@@ -10,8 +10,14 @@ datasource db {
 model User {
   id       String @id @default(cuid())
   username String @unique
+  role     Role   @default(staff)
   password String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  admin
+  staff
 }

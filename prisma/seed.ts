@@ -9,6 +9,7 @@ const main = async () => {
   await db.user.create({
     data: {
       username: "naing",
+      role: "admin",
       password: hashedPassword,
     },
   })
