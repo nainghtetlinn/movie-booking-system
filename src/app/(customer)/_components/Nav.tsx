@@ -10,10 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Headset, Menu, ShoppingCart, Ticket } from "lucide-react"
+import Link from "next/link"
+import Profile from "@/components/Profile"
 
 import { useScrollDirection } from "@/hooks/useScrollDirection"
 import clsx from "clsx"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const Nav = () => {
@@ -30,9 +31,10 @@ const Nav = () => {
         <div className="container flex items-center justify-between py-2">
           <h4 className="text-lg font-semibold">Movie Booking System</h4>
           <div className="flex items-center space-x-4">
-            <DarkModeBtn />
             <MobileMenu path={path} />
             <NavLinks path={path} />
+            <DarkModeBtn />
+            <Profile />
           </div>
         </div>
       </nav>
