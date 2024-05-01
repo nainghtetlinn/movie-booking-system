@@ -1,0 +1,104 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  username String [unique, not null]
+  role Role [not null, default: 'staff']
+  password String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bookings Booking [not null]
+}
+
+Table Movie {
+  id String [pk]
+  title String [unique, not null]
+  description String [not null]
+  durationInMins Int [not null]
+  releaseDate DateTime [not null]
+  genre String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  shows Show [not null]
+}
+
+Table Show {
+  id String [pk]
+  date DateTime [not null]
+  startTime DateTime [not null]
+  endTime DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  movieId String [not null]
+  movie Movie [not null]
+  showSeatRelation ShowSeatRelation [not null]
+  tickets Ticket [not null]
+}
+
+Table Seat {
+  id String [pk]
+  number Int [not null]
+  row String [not null]
+  class String [not null]
+  price Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  showSeatRelation ShowSeatRelation [not null]
+  tickets Ticket [not null]
+}
+
+Table Booking {
+  id String [pk]
+  totalAmount Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  staffId String [not null]
+  staff User [not null]
+  tickets Ticket [not null]
+}
+
+Table Ticket {
+  id String [pk]
+  amount Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  showId String [not null]
+  show Show [not null]
+  seatId String [not null]
+  seat Seat [not null]
+  bookingId String [not null]
+  booking Booking [not null]
+}
+
+Table ShowSeatRelation {
+  id String [pk]
+  status SeatStatus [not null, default: 'available']
+  showId String [not null]
+  show Show [not null]
+  seatId String [not null]
+  seat Seat [not null]
+}
+
+Enum Role {
+  admin
+  staff
+}
+
+Enum SeatStatus {
+  available
+  purchased
+}
+
+Ref: Show.movieId > Movie.id [delete: Restrict]
+
+Ref: Booking.staffId > User.id [delete: Restrict]
+
+Ref: Ticket.showId > Show.id [delete: Restrict]
+
+Ref: Ticket.seatId > Seat.id [delete: Restrict]
+
+Ref: Ticket.bookingId > Booking.id [delete: Restrict]
+
+Ref: ShowSeatRelation.showId > Show.id [delete: Restrict]
+
+Ref: ShowSeatRelation.seatId > Seat.id [delete: Restrict]

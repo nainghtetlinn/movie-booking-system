@@ -2,22 +2,108 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+  output   = "./"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id       String @id @default(cuid())
-  username String @unique
-  role     Role   @default(staff)
-  password String
-
+  id        String   @id @default(cuid())
+  username  String   @unique
+  role      Role     @default(staff)
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  bookings Booking[]
 }
 
 enum Role {
   admin
   staff
+}
+
+model Movie {
+  id             String   @id @default(cuid())
+  title          String   @unique
+  description    String
+  durationInMins Int
+  releaseDate    DateTime
+  genre          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  shows Show[]
+}
+
+model Show {
+  id        String   @id @default(cuid())
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  movieId String
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Restrict)
+
+  showSeatRelation ShowSeatRelation[]
+  tickets          Ticket[]
+}
+
+model Seat {
+  id        String   @id @default(cuid())
+  number    Int
+  row       String
+  class     String
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  showSeatRelation ShowSeatRelation[]
+  tickets          Ticket[]
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  totalAmount Float
+  createdAt   DateTime @default(now())
+
+  staffId String
+  staff   User   @relation(fields: [staffId], references: [id], onDelete: Restrict)
+
+  tickets Ticket[]
+}
+
+model Ticket {
+  id        String   @id @default(cuid())
+  amount    Float
+  createdAt DateTime @default(now())
+
+  showId    String
+  show      Show    @relation(fields: [showId], references: [id], onDelete: Restrict)
+  seatId    String
+  seat      Seat    @relation(fields: [seatId], references: [id], onDelete: Restrict)
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+}
+
+model ShowSeatRelation {
+  id     String     @id @default(cuid())
+  status SeatStatus @default(available)
+
+  showId String
+  show   Show   @relation(fields: [showId], references: [id], onDelete: Restrict)
+  seatId String
+  seat   Seat   @relation(fields: [seatId], references: [id], onDelete: Restrict)
+}
+
+enum SeatStatus {
+  available
+  purchased
 }
