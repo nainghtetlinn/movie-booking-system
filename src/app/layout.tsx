@@ -4,6 +4,7 @@ import "./globals.css"
 
 import SessionProvider from "@/providers/session-provider"
 import ThemeProvider from "@/providers/theme-provider"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange>
             <main>{children}</main>
+            <Toaster />
           </ThemeProvider>
         </SessionProvider>
       </body>
