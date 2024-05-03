@@ -13,7 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import CreateMovieBtn from "./CreateMovieBtn"
 import ToggleViewBtn from "./ToggleViewBtn"
 
-import { Movie } from "@prisma/client"
+import { TMovieTable } from "@/types/movie"
 import {
   SortingState,
   VisibilityState,
@@ -25,7 +25,7 @@ import {
 import { useState } from "react"
 import { columns } from "./columns"
 
-const MoviesTable = ({ movies }: { movies: Movie[] }) => {
+const MoviesTable = ({ movies }: { movies: TMovieTable[] }) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 

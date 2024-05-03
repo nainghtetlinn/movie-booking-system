@@ -7,10 +7,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Settings2 } from "lucide-react"
 
-import { Movie } from "@prisma/client"
+import { TMovieTable } from "@/types/movie"
 import { Table } from "@tanstack/react-table"
 
-const ToggleViewBtn = ({ table }: { table: Table<Movie> }) => {
+const ToggleViewBtn = ({ table }: { table: Table<TMovieTable> }) => {
   return (
     <>
       <DropdownMenu>

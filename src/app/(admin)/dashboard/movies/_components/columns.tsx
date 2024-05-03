@@ -6,11 +6,11 @@ import { ArrowDown, ArrowUp } from "lucide-react"
 import ActionsBtn from "./ActionsBtn"
 
 import { formatTime } from "@/lib/utils"
-import { Movie } from "@prisma/client"
+import { TMovieTable } from "@/types/movie"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 
-export const columns: ColumnDef<Movie>[] = [
+export const columns: ColumnDef<TMovieTable>[] = [
   {
     accessorKey: "title",
     header: "Title",
@@ -57,6 +57,11 @@ export const columns: ColumnDef<Movie>[] = [
     accessorKey: "genre",
     header: "Genre",
     cell: ({ row }) => <Badge variant="outline">{row.getValue("genre")}</Badge>,
+  },
+  {
+    id: "shows",
+    accessorKey: "_count.shows",
+    header: "Shows",
   },
   {
     id: "actions",
