@@ -1,14 +1,15 @@
 "use client"
 
 import DarkModeBtn from "@/components/DarkModeBtn"
+import Profile from "@/components/Profile"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Clapperboard, Film, Home, Menu, Ticket, Users } from "lucide-react"
-import Profile from "@/components/Profile"
 import Link from "next/link"
 
 import { useScrollDirection } from "@/hooks/useScrollDirection"
 import clsx from "clsx"
+import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
 
 const Nav = () => {
@@ -46,6 +47,8 @@ const links = [
 ]
 
 const SideNav = ({ path }: { path: string }) => {
+  const session = useSession()
+
   return (
     <>
       <Sheet>
@@ -59,22 +62,27 @@ const SideNav = ({ path }: { path: string }) => {
             <SheetTitle>MBS Dashboard</SheetTitle>
           </SheetHeader>
           <ul className="mt-12 space-y-2">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className={clsx(
-                    "w-full justify-start",
-                    path.endsWith(link.href) && "bg-secondary",
-                  )}>
-                  <Link href={link.href}>
-                    <link.icon className="mr-2 h-4 w-4" />
-                    {link.title}
-                  </Link>
-                </Button>
-              </li>
-            ))}
+            {links.map((link) => {
+              if (link.href === "/dashboard/staffs" && session.data?.user.role !== "admin")
+                return null
+
+              return (
+                <li key={link.href}>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className={clsx(
+                      "w-full justify-start",
+                      path.endsWith(link.href) && "bg-secondary",
+                    )}>
+                    <Link href={link.href}>
+                      <link.icon className="mr-2 h-4 w-4" />
+                      {link.title}
+                    </Link>
+                  </Button>
+                </li>
+              )
+            })}
           </ul>
         </SheetContent>
       </Sheet>

@@ -5,12 +5,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Clapperboard, Film, Home, Menu, Ticket, Users, X } from "lucide-react"
 
 import clsx from "clsx"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 const Sidebar = () => {
   const path = usePathname()
+  const session = useSession()
   const [open, setOpen] = useState(false)
 
   return (
@@ -28,31 +30,36 @@ const Sidebar = () => {
                   {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
                 </Button>
               </li>
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        asChild
-                        variant="ghost"
-                        className={clsx(
-                          "w-full justify-start overflow-hidden p-0",
-                          path.endsWith(link.href) && "bg-secondary",
-                        )}>
-                        <Link href={link.href}>
-                          <span className="flex h-10 w-10 shrink-0 items-center justify-center">
-                            <link.icon className="h-4 w-4" />
-                          </span>
-                          <span>{link.title}</span>
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" className={clsx(open && "hidden")}>
-                      {link.title}
-                    </TooltipContent>
-                  </Tooltip>
-                </li>
-              ))}
+              {links.map((link) => {
+                if (link.href === "/dashboard/staffs" && session.data?.user.role !== "admin")
+                  return null
+
+                return (
+                  <li key={link.href}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          asChild
+                          variant="ghost"
+                          className={clsx(
+                            "w-full justify-start overflow-hidden p-0",
+                            path.endsWith(link.href) && "bg-secondary",
+                          )}>
+                          <Link href={link.href}>
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center">
+                              <link.icon className="h-4 w-4" />
+                            </span>
+                            <span>{link.title}</span>
+                          </Link>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className={clsx(open && "hidden")}>
+                        {link.title}
+                      </TooltipContent>
+                    </Tooltip>
+                  </li>
+                )
+              })}
             </ul>
           </nav>
         </aside>
