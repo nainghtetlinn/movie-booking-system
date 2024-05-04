@@ -99,6 +99,6 @@ Ref: Ticket.seatId > Seat.id [delete: Restrict]
 
 Ref: Ticket.bookingId > Booking.id [delete: Restrict]
 
-Ref: ShowSeatRelation.showId > Show.id [delete: Restrict]
+Ref: ShowSeatRelation.showId > Show.id [delete: Cascade]
 
 Ref: ShowSeatRelation.seatId > Seat.id [delete: Restrict]

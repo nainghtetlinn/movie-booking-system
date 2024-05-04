@@ -98,7 +98,7 @@ model ShowSeatRelation {
   status SeatStatus @default(available)
 
   showId String
-  show   Show   @relation(fields: [showId], references: [id], onDelete: Restrict)
+  show   Show   @relation(fields: [showId], references: [id], onDelete: Cascade)
   seatId String
   seat   Seat   @relation(fields: [seatId], references: [id], onDelete: Restrict)
 }
