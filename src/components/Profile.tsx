@@ -24,55 +24,53 @@ const Profile = () => {
   if (session.status === "loading") return <Skeleton className="h-10 w-10 rounded-full" />
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          {session.status === "authenticated" ? (
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt={"Photo of " + session.data?.user.username}
-              />
-              <AvatarFallback>{session.data?.user.username[0]}</AvatarFallback>
-            </Avatar>
-          ) : (
-            <div className="relative h-10 w-10 overflow-hidden rounded-full">
-              <Image src={PlaceholderUser} alt="Unauthenticated User" fill />
-            </div>
-          )}
-        </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        {session.status === "authenticated" ? (
+          <Avatar>
+            <AvatarImage
+              src="https://github.com/shadcn.png"
+              alt={"Photo of " + session.data?.user.username}
+            />
+            <AvatarFallback>{session.data?.user.username[0]}</AvatarFallback>
+          </Avatar>
+        ) : (
+          <div className="relative h-10 w-10 overflow-hidden rounded-full">
+            <Image src={PlaceholderUser} alt="Unauthenticated User" fill />
+          </div>
+        )}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="bottom" align="end">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
 
-          {session.status === "authenticated" ? (
-            <>
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
-                  <CircleUser className="mr-2 h-4 w-4" />
-                  Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard">
-                  <BarChart3 className="mr-2 h-4 w-4" />
-                  Dashboard
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
-                <LogOut className="mr-2 h-4 w-4" />
-                Log out
-              </DropdownMenuItem>
-            </>
-          ) : (
-            <DropdownMenuItem onClick={() => signIn()}>
-              <LogIn className="mr-2 h-4 w-4" />
-              Log in
+        {session.status === "authenticated" ? (
+          <>
+            <DropdownMenuItem asChild>
+              <Link href="/profile">
+                <CircleUser className="mr-2 h-4 w-4" />
+                Profile
+              </Link>
             </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard">
+                <BarChart3 className="mr-2 h-4 w-4" />
+                Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Log out
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <DropdownMenuItem onClick={() => signIn()}>
+            <LogIn className="mr-2 h-4 w-4" />
+            Log in
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 

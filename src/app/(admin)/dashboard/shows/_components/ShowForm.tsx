@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import DatePicker from "@/components/DatePicker"
+import TimeInput from "@/components/TimeInput"
 import {
   Form,
   FormControl,
@@ -17,23 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CalendarIcon } from "lucide-react"
 
-import { cn } from "@/lib/utils"
-import { Prisma } from "@prisma/client"
-import { TShow } from "@/types/show"
-import { format } from "date-fns"
+import { TShow, TShowMovieOptions } from "@/types/show"
 import { UseFormReturn } from "react-hook-form"
 
-const ShowForm = ({
-  form,
-  movies,
-}: {
-  form: UseFormReturn<TShow>
-  movies: Prisma.MovieGetPayload<{ select: { id: true; title: true } }>[]
-}) => {
+const ShowForm = ({ form, movies }: { form: UseFormReturn<TShow>; movies: TShowMovieOptions }) => {
   return (
     <>
       <Form {...form}>
@@ -68,24 +56,7 @@ const ShowForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground",
-                      )}>
-                      {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
-                </PopoverContent>
-              </Popover>
+              <DatePicker value={field.value} onChange={field.onChange} />
               <FormMessage />
             </FormItem>
           )}
@@ -98,25 +69,7 @@ const ShowForm = ({
             <FormItem>
               <FormLabel>Start Time</FormLabel>
               <FormControl>
-                <Input
-                  type="time"
-                  defaultValue={field.value ? format(field.value, "HH:mm") : "00:00"}
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      const [hours, minutes] = e.target.value.split(":")
-                      const current = new Date()
-                      field.onChange(
-                        new Date(
-                          current.getFullYear(),
-                          current.getMonth(),
-                          current.getDate(),
-                          +hours,
-                          +minutes,
-                        ),
-                      )
-                    }
-                  }}
-                />
+                <TimeInput value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -130,25 +83,7 @@ const ShowForm = ({
             <FormItem>
               <FormLabel>End Time</FormLabel>
               <FormControl>
-                <Input
-                  type="time"
-                  defaultValue={field.value ? format(field.value, "HH:mm") : "00:00"}
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      const [hours, minutes] = e.target.value.split(":")
-                      const current = new Date()
-                      field.onChange(
-                        new Date(
-                          current.getFullYear(),
-                          current.getMonth(),
-                          current.getDate(),
-                          +hours,
-                          +minutes,
-                        ),
-                      )
-                    }
-                  }}
-                />
+                <TimeInput value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

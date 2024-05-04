@@ -1,10 +1,10 @@
-import { z } from "zod"
 import { showSchema } from "@/validators/show"
 import { Prisma } from "@prisma/client"
+import { z } from "zod"
 
 export type TShow = z.infer<typeof showSchema>
 
-export type TShowTable = Prisma.ShowGetPayload<{
+export type TShowTableItem = Prisma.ShowGetPayload<{
   include: {
     movie: {
       select: {
@@ -16,3 +16,5 @@ export type TShowTable = Prisma.ShowGetPayload<{
     }
   }
 }>
+
+export type TShowMovieOptions = Prisma.MovieGetPayload<{ select: { id: true; title: true } }>[]

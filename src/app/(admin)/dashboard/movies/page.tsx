@@ -1,4 +1,4 @@
-import MoviesTable from "./_components/MoviesTable"
+import MoviesTable from "./MoviesTable"
 
 import db from "prisma/db"
 

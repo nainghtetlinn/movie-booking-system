@@ -14,17 +14,12 @@ import { Loader2, Plus } from "lucide-react"
 import ShowForm from "./ShowForm"
 
 import { createShow } from "@/server-actions/show"
-import { TShow } from "@/types/show"
-import { Prisma } from "@prisma/client"
+import { TShow, TShowMovieOptions } from "@/types/show"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useShowForm } from "./show-hooks"
 
-const CreateShowBtn = ({
-  movies,
-}: {
-  movies: Prisma.MovieGetPayload<{ select: { id: true; title: true } }>[]
-}) => {
+const CreateShowBtn = ({ movies }: { movies: TShowMovieOptions }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const form = useShowForm()

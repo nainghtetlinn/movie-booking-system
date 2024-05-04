@@ -1,11 +1,13 @@
-import { z } from "zod"
 import { movieSchema } from "@/validators/movie"
 import { Prisma } from "@prisma/client"
+import { z } from "zod"
 
 export type TMovie = z.infer<typeof movieSchema>
 
-export type TMovieTable = Prisma.MovieGetPayload<{
+export type TMovieTableItem = Prisma.MovieGetPayload<{
   include: {
-    _count: true
+    _count: {
+      select: { shows: true }
+    }
   }
 }>

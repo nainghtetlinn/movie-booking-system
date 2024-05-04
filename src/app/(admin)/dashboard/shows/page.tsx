@@ -1,4 +1,4 @@
-import ShowsTable from "./_components/ShowsTable"
+import ShowsTable from "./ShowsTable"
 
 import db from "prisma/db"
 
