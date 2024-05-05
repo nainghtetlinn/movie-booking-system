@@ -8,11 +8,6 @@ const Staffs = async () => {
       id: true,
       username: true,
       role: true,
-      _count: {
-        select: {
-          bookings: true,
-        },
-      },
     },
   })
 

@@ -9,8 +9,5 @@ export type TStaffTableItem = Prisma.UserGetPayload<{
     id: true
     username: true
     role: true
-    _count: {
-      select: { bookings: true }
-    }
   }
 }>

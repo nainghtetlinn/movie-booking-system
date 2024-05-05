@@ -14,12 +14,13 @@ export const columns: ColumnDef<TStaffTableItem>[] = [
   {
     accessorKey: "role",
     header: "Role",
-    cell: ({ row }) => <Badge className="capitalize">{row.getValue("role")}</Badge>,
-  },
-  {
-    id: "bookings",
-    accessorKey: "_count.bookings",
-    header: "Bookings",
+    cell: ({ row }) => (
+      <Badge
+        variant={row.getValue("role") === "admin" ? "default" : "outline"}
+        className="capitalize">
+        {row.getValue("role")}
+      </Badge>
+    ),
   },
   {
     id: "actions",
