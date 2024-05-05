@@ -19,13 +19,12 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  bookings Booking[]
 }
 
 enum Role {
   admin
   staff
+  test_staff
 }
 
 model Movie {
@@ -71,11 +70,9 @@ model Seat {
 
 model Booking {
   id          String   @id @default(cuid())
+  email       String
   totalAmount Float
   createdAt   DateTime @default(now())
-
-  staffId String
-  staff   User   @relation(fields: [staffId], references: [id], onDelete: Restrict)
 
   tickets Ticket[]
 }

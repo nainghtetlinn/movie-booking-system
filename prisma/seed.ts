@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker"
 import bcrypt from "bcrypt"
-import { PrismaClient, Prisma, User } from "@prisma/client"
+import { PrismaClient, Prisma } from "@prisma/client"
 
 const db = new PrismaClient()
 
@@ -95,41 +95,70 @@ const seedBookingsAndTickets = async () => {
   const bookings: Prisma.BookingCreateManyInput[] = []
   const tickets: Prisma.TicketCreateManyInput[] = []
 
-  const staff = (await db.user.findFirst()) as User
   for (let i = 0; i < 5; i++) {
-    bookings.push({ totalAmount: 0, staffId: staff.id })
+    bookings.push({ totalAmount: 0, email: process.env.CUSTOMER_TEST_EMAIL! })
   }
   await db.booking.createMany({ data: bookings })
 
   const dbBookings = await db.booking.findMany()
   const shows = await db.show.findMany()
-  const seats = await db.seat.findMany()
+  const showIds = shows.map((id) => id.id)
+  const showSeats = await db.showSeatRelation.findMany({
+    where: { showId: { in: showIds } },
+    include: {
+      seat: {
+        select: {
+          price: true,
+        },
+      },
+    },
+  })
+
   dbBookings.forEach(async (booking) => {
     let totalAmount = 0
-    const show = shows[faker.number.int({ min: 0, max: shows.length - 1 })]
+    const showId = showIds[faker.number.int({ min: 0, max: showIds.length - 1 })]
+
     for (let i = 0; i < faker.number.int({ min: 1, max: 5 }); i++) {
-      const seat = seats[faker.number.int({ min: 0, max: seats.length - 1 })]
+      let showSeat = showSeats[faker.number.int({ min: 0, max: showSeats.length - 1 })]
+      while (showSeat.status === "purchased") {
+        showSeat = showSeats[faker.number.int({ min: 0, max: showSeats.length - 1 })]
+      }
       tickets.push({
         bookingId: booking.id,
-        showId: show.id,
-        seatId: seat.id,
-        amount: seat.price,
+        showId,
+        seatId: showSeat.seatId,
+        amount: showSeat.seat.price,
       })
-      totalAmount += seat.price
+      totalAmount += showSeat.seat.price
     }
+
     await db.booking.update({ where: { id: booking.id }, data: { totalAmount } })
   })
 
   await db.ticket.createMany({ data: tickets })
+
+  const dbTickets = await db.ticket.findMany()
+  dbTickets.forEach(async (t) => {
+    const { seatId, showId } = t
+    await db.showSeatRelation.updateMany({
+      where: {
+        seatId,
+        showId,
+      },
+      data: {
+        status: "purchased",
+      },
+    })
+  })
 }
 
 const main = async () => {
   console.log("Cleaning database ... ")
+  await db.user.deleteMany()
   await db.showSeatRelation.deleteMany()
   await db.ticket.deleteMany()
   await db.seat.deleteMany()
   await db.booking.deleteMany()
-  await db.user.deleteMany()
   await db.show.deleteMany()
   await db.movie.deleteMany()
 
