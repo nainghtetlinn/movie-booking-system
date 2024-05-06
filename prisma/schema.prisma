@@ -31,6 +31,7 @@ model Movie {
   id             String   @id @default(cuid())
   title          String   @unique
   description    String
+  posterUrl      String
   durationInMins Int
   releaseDate    DateTime
   genre          String

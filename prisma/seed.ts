@@ -29,6 +29,7 @@ const seedMovie = async () => {
     movies.push({
       title,
       description: faker.commerce.productDescription(),
+      posterUrl: process.env.MOVIE_POSTER_SEED!,
       genre: faker.music.genre(),
       durationInMins: faker.number.int({ min: 30, max: 150 }),
       releaseDate: new Date(faker.date.soon({ days: 7 }).setHours(0, 0, 0, 0)),
@@ -96,7 +97,7 @@ const seedBookingsAndTickets = async () => {
   const tickets: Prisma.TicketCreateManyInput[] = []
 
   for (let i = 0; i < 5; i++) {
-    bookings.push({ totalAmount: 0, email: process.env.CUSTOMER_TEST_EMAIL! })
+    bookings.push({ totalAmount: 0, email: process.env.CUSTOMER_EMAIL_SEED! })
   }
   await db.booking.createMany({ data: bookings })
 

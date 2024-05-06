@@ -15,6 +15,7 @@ Table Movie {
   id String [pk]
   title String [unique, not null]
   description String [not null]
+  posterUrl String [not null]
   durationInMins Int [not null]
   releaseDate DateTime [not null]
   genre String [not null]
