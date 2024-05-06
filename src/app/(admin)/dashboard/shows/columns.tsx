@@ -9,6 +9,12 @@ import { format } from "date-fns"
 
 export const columns: ColumnDef<TShowTableItem>[] = [
   {
+    id: "poster",
+    accessorKey: "movie.posterUrl",
+    header: "Poster",
+    cell: ({ row }) => <img src={row.getValue("poster")} alt={row.getValue("title")} width={60} />,
+  },
+  {
     id: "title",
     accessorKey: "movie.title",
     header: ({ column }) => <TableSortingBtn title="Title" column={column} />,

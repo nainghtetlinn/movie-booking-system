@@ -48,6 +48,20 @@ const MovieForm = ({ form }: { form: UseFormReturn<TMovie> }) => {
 
         <FormField
           control={form.control}
+          name="posterUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Poster Url</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="genre"
           render={({ field }) => (
             <FormItem>

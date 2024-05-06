@@ -11,6 +11,12 @@ import { format } from "date-fns"
 
 export const columns: ColumnDef<TMovieTableItem>[] = [
   {
+    id: "poster",
+    accessorKey: "posterUrl",
+    header: "Poster",
+    cell: ({ row }) => <img src={row.getValue("poster")} alt={row.getValue("title")} width={60} />,
+  },
+  {
     accessorKey: "title",
     header: "Title",
   },

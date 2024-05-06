@@ -9,6 +9,7 @@ export type TShowTableItem = Prisma.ShowGetPayload<{
     movie: {
       select: {
         title: true
+        posterUrl: true
       }
     }
     _count: {

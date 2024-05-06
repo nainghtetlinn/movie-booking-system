@@ -5,7 +5,7 @@ import db from "prisma/db"
 const Shows = async () => {
   const shows = await db.show.findMany({
     include: {
-      movie: { select: { title: true } },
+      movie: { select: { title: true, posterUrl: true } },
       _count: { select: { tickets: true } },
     },
     orderBy: {
