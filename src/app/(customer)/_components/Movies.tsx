@@ -1,52 +1,55 @@
-import HeroImage from "public/hero-image.jpg"
+"use client"
 
+import Carousel from "@/components/Carousel"
 import TitleTypography from "@/components/TitleTypography"
-import MoviesCarousel from "./MoviesCarousel"
+import { Button } from "@/components/ui/button"
 
-const Movies = () => {
+import { formatTime } from "@/lib/utils"
+import { Movie } from "@prisma/client"
+import { format } from "date-fns"
+import Image from "next/image"
+import Link from "next/link"
+
+interface Props {
+  movies: Movie[]
+}
+
+const Movies = ({ movies }: Props) => {
   return (
     <>
       <section className="container mb-12">
         <TitleTypography>Movies</TitleTypography>
         <div>
-          <MoviesCarousel
-            movies={[
-              {
-                id: "m1",
-                title: "Harry Potter 1",
-                duration: "1 Hr 50 Min",
-                released: "Mar 12,2024",
-                image: HeroImage,
-              },
-              {
-                id: "m2",
-                title: "Harry Potter 2",
-                duration: "1 Hr 50 Min",
-                released: "Mar 12,2024",
-                image: HeroImage,
-              },
-              {
-                id: "m3",
-                title: "Harry Potter 3",
-                duration: "1 Hr 50 Min",
-                released: "Mar 12,2024",
-                image: HeroImage,
-              },
-              {
-                id: "m4",
-                title: "Harry Potter 4",
-                duration: "1 Hr 50 Min",
-                released: "Mar 12,2024",
-                image: HeroImage,
-              },
-              {
-                id: "m5",
-                title: "Harry Potter 5",
-                duration: "1 Hr 50 Min",
-                released: "Mar 12,2024",
-                image: HeroImage,
-              },
-            ]}
+          <Carousel
+            items={movies}
+            render={(movie) => {
+              return (
+                <div className="select-none overflow-hidden rounded-lg">
+                  <div className="relative aspect-[2/3] max-h-[400px] w-full">
+                    <Link href={`/movies/${movie.title.replaceAll(" ", "_")}`}>
+                      <Image
+                        src={movie.posterUrl}
+                        alt={`Poster of ${movie.title}`}
+                        fill
+                        className="object-contain"
+                      />
+                    </Link>
+                  </div>
+                  <div className="p-2 text-center">
+                    <h6 className="mb-2 text-xl font-semibold transition-colors hover:text-primary">
+                      <Link href={`/movies/${movie.title.replaceAll(" ", "_")}`}>
+                        {movie.title}
+                      </Link>
+                    </h6>
+                    <p>{formatTime(movie.durationInMins)}</p>
+                    <p>Released {format(movie.releaseDate, "MMM d, yyyy")}</p>
+                    <Button className="mt-2" asChild>
+                      <Link href={`/booking?id=${movie.id}`}>Book Now</Link>
+                    </Button>
+                  </div>
+                </div>
+              )
+            }}
           />
         </div>
       </section>
