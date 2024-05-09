@@ -36,7 +36,11 @@ const Profile = () => {
           </Avatar>
         ) : (
           <div className="relative h-10 w-10 overflow-hidden rounded-full">
-            <Image src={PlaceholderUser} alt="Unauthenticated User" fill />
+            <Image
+              src={PlaceholderUser}
+              alt="Unauthenticated User Photo"
+              className="h-full w-full object-cover"
+            />
           </div>
         )}
       </DropdownMenuTrigger>
