@@ -1,95 +1,40 @@
-"use client"
-
 import TitleTypography from "@/components/TitleTypography"
-import { Stepper, Step, StepLabel, StepContent } from "@/components/ui/stepper"
-import { Form } from "@/components/ui/form"
-import SelectMovie from "./_components/SelectMovie"
-import SelectShowtime from "./_components/SelectShowtime"
-import SelectSeat from "./_components/SelectSeat"
-import Checkout from "./_components/Checkout"
+import BookingForm from "./_components/BookingForm"
 
-import { useState } from "react"
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query"
+import { getMovies, getSeats, getShows } from "./actions"
 
-import BookingContext from "./_components/booking-context"
-import { useBookingForm } from "./_components/booking-hooks"
-import { TBookingClient } from "@/types/booking"
+const BookingPage = async ({
+  searchParams,
+}: {
+  searchParams: { movieId?: string; showId?: string }
+}) => {
+  const qc = new QueryClient()
 
-export const steps: {
-  component: JSX.Element
-  label: string
-  field?: "movieId" | "showtimeId" | "seatIds"
-}[] = [
-  {
-    component: <SelectMovie />,
-    label: "Select movie",
-    field: "movieId",
-  },
-  {
-    component: <SelectShowtime />,
-    label: "Select showtime",
-    field: "showtimeId",
-  },
-  {
-    component: <SelectSeat />,
-    label: "Select seat",
-    field: "seatIds",
-  },
-  {
-    component: <Checkout />,
-    label: "Checkout",
-  },
-]
+  await qc.prefetchQuery({ queryKey: ["movies"], queryFn: () => getMovies() })
 
-const BookingPage = () => {
-  const form = useBookingForm()
-
-  const onSubmit = (e: TBookingClient) => {
-    console.log(e)
+  if (searchParams.movieId) {
+    await qc.prefetchQuery({
+      queryKey: ["movie", searchParams.movieId, "shows"],
+      queryFn: () => getShows(searchParams.movieId!),
+    })
   }
 
-  const [activeStep, setActiveStep] = useState(0)
-
-  const goNext = async () => {
-    const field = steps[activeStep].field
-    const output = await form.trigger(field, { shouldFocus: true })
-    if (!output) return
-
-    if (activeStep + 1 === steps.length) return console.log("Finished.")
-    setActiveStep(activeStep + 1)
-  }
-
-  const goPrev = () => {
-    if (activeStep === 0) return console.log("Start.")
-    setActiveStep(activeStep - 1)
+  if (searchParams.showId) {
+    await qc.prefetchQuery({
+      queryKey: ["movie", searchParams.movieId, "show", searchParams.showId, "seats"],
+      queryFn: () => getSeats(searchParams.showId!),
+    })
   }
 
   return (
     <>
-      <BookingContext.Provider value={{ goNext, goPrev }}>
-        <section className="container">
-          <TitleTypography>Booking</TitleTypography>
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <Stepper
-                activeStep={activeStep}
-                orientation="vertical"
-                className="mb-12 max-w-[700px]">
-                {steps.map((step, i) => (
-                  <Step key={i}>
-                    <StepLabel
-                      onClick={() => setActiveStep(i)}
-                      className="cursor-pointer transition-colors hover:text-primary">
-                      {step.label}
-                    </StepLabel>
-                    <StepContent>{step.component}</StepContent>
-                  </Step>
-                ))}
-              </Stepper>
-            </form>
-          </Form>
-        </section>
-      </BookingContext.Provider>
+      <section className="container">
+        <TitleTypography>Booking</TitleTypography>
+        <HydrationBoundary state={dehydrate(qc)}>
+          <BookingForm />
+        </HydrationBoundary>
+      </section>
     </>
   )
 }
