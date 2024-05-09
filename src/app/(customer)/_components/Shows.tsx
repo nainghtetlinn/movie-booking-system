@@ -45,7 +45,9 @@ const Shows = ({ shows }: Props) => {
                     </p>
                     <p>{format(show.date, "MMM d, yyyy")}</p>
                     <Button className="mt-2" asChild>
-                      <Link href={`/booking?id=${show.movie.id}`}>Book Now</Link>
+                      <Link href={`/booking?movieId=${show.movie.id}&showId=${show.id}`}>
+                        Book Now
+                      </Link>
                     </Button>
                   </div>
                 </div>

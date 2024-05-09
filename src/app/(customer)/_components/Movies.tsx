@@ -44,7 +44,7 @@ const Movies = ({ movies }: Props) => {
                     <p>{formatTime(movie.durationInMins)}</p>
                     <p>Released {format(movie.releaseDate, "MMM d, yyyy")}</p>
                     <Button className="mt-2" asChild>
-                      <Link href={`/booking?id=${movie.id}`}>Book Now</Link>
+                      <Link href={`/booking?movieId=${movie.id}`}>Book Now</Link>
                     </Button>
                   </div>
                 </div>
