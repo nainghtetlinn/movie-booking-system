@@ -10,15 +10,7 @@ const Hero = () => {
       <section className="relative mb-12 h-[80vh] overflow-hidden">
         <div className="absolute inset-0">
           <span className="sr-only">Background Image</span>
-          <Image
-            src={HeroImage}
-            alt="Hero Image"
-            quality={100}
-            fill
-            style={{
-              objectFit: "cover",
-            }}
-          />
+          <Image src={HeroImage} alt="Hero Image" priority className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/90"></div>
         </div>
 
