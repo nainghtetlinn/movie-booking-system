@@ -84,7 +84,7 @@ const SelectSeat = () => {
                                   className={clsx(
                                     "h-8 w-8 text-xs md:h-10 md:w-10 md:text-sm",
                                     seat.showSeatRelation[0].status === "purchased"
-                                      ? "bg-red-500"
+                                      ? "bg-red-500 !opacity-100"
                                       : "bg-green-500",
                                   )}>
                                   {seat.row}
