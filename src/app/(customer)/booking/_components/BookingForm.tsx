@@ -4,25 +4,41 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
 import { Form } from "@/components/ui/form"
 import { Step, StepContent, StepLabel, Stepper } from "@/components/ui/stepper"
+import { Loader2 } from "lucide-react"
 import Checkout from "./checkout"
 import SelectMovie from "./selectMovie"
 import SelectSeat from "./selectSeat"
 import SelectShow from "./selectShow"
 
 import { TBookingClient } from "@/types/booking"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
+import { toast } from "sonner"
+import { makeBooking } from "../actions"
 import { useBookingForm } from "./booking-hooks"
 
 const BookingForm = () => {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const movieId = searchParams.get("movieId")
   const showId = searchParams.get("showId")
 
-  const form = useBookingForm({ movieId: movieId || "", showId: showId || "" })
+  const form = useBookingForm({ movieId: movieId || "", showId: showId || "", email: "" })
 
-  const onSubmit = (e: TBookingClient) => {
-    console.log(e)
+  const [loading, setLoading] = useState(false)
+  const onSubmit = async (data: TBookingClient) => {
+    setLoading(true)
+    const result = await makeBooking(data)
+    console.log(result)
+    if (result.success) {
+      toast.success("Success")
+      form.reset()
+      setActiveStep(0)
+      // router.push("/success")
+    } else {
+      toast.error(result.message)
+    }
+    setLoading(false)
   }
 
   const [activeStep, setActiveStep] = useState(0)
@@ -63,7 +79,9 @@ const BookingForm = () => {
                     {i !== steps.length - 1 ? (
                       <Button onClick={goNext}>Next</Button>
                     ) : (
-                      <Button type="submit">Confirm</Button>
+                      <Button type="submit" disabled={loading}>
+                        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Confirm
+                      </Button>
                     )}
                   </CardFooter>
                 </Card>
