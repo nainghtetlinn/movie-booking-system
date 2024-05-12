@@ -43,11 +43,8 @@ export async function getCheckout({
   const movie = await db.movie.findUnique({ where: { id: movieId } })
   const show = await db.show.findUnique({ where: { id: showId, movieId } })
   const seats = await db.seat.findMany({
-    where: { id: { in: seatIds }, showSeatRelation: { some: { showId, status: "available" } } },
+    where: { id: { in: seatIds } },
   })
-
-  if (!movie || !show || seats.length === 0 || seats.length !== seatIds.length)
-    throw new Error("Something went wrong.")
 
   return { movie, show, seats }
 }
