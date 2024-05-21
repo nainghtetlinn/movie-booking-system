@@ -9,7 +9,7 @@ import { Prisma } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
 import clsx from "clsx"
 import { useMemo } from "react"
-import { getSeats } from "../../actions"
+import { getSeats } from "@/server-actions/booking"
 import { useBookingFormContext } from "../booking-hooks"
 
 const SelectSeat = () => {

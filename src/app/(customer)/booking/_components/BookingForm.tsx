@@ -11,14 +11,13 @@ import SelectSeat from "./selectSeat"
 import SelectShow from "./selectShow"
 
 import { TBookingClient } from "@/types/booking"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
-import { makeBooking } from "../actions"
+import { makeBooking } from "@/server-actions/booking"
 import { useBookingForm } from "./booking-hooks"
 
 const BookingForm = () => {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const movieId = searchParams.get("movieId")
   const showId = searchParams.get("showId")
@@ -28,15 +27,10 @@ const BookingForm = () => {
   const [loading, setLoading] = useState(false)
   const onSubmit = async (data: TBookingClient) => {
     setLoading(true)
-    const result = await makeBooking(data)
-    console.log(result)
-    if (result.success) {
-      toast.success("Success")
-      form.reset()
-      setActiveStep(0)
-      // router.push("/success")
-    } else {
-      toast.error(result.message)
+    try {
+      await makeBooking(data)
+    } catch (error) {
+      toast.error("Something went worng.")
     }
     setLoading(false)
   }

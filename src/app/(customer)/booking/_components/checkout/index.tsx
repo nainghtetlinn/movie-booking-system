@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 import { useBookingFormContext } from "../booking-hooks"
 import { useQuery } from "@tanstack/react-query"
-import { getCheckout } from "../../actions"
+import { getCheckout } from "@/server-actions/booking"
 import { format } from "date-fns"
 
 const Checkout = () => {

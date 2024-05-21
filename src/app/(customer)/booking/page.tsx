@@ -2,7 +2,7 @@ import TitleTypography from "@/components/TitleTypography"
 import BookingForm from "./_components/BookingForm"
 
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query"
-import { getMovies, getSeats, getShows } from "./actions"
+import { getMovies, getSeats, getShows } from "@/server-actions/booking"
 
 const BookingPage = async ({
   searchParams,

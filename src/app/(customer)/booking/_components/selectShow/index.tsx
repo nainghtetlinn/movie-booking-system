@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 import { formatShowTime } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
-import { getShows } from "../../actions"
+import { getShows } from "@/server-actions/booking"
 import { useBookingFormContext } from "../booking-hooks"
 
 const SelectShow = () => {
