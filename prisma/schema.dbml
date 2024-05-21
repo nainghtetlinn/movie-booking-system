@@ -53,7 +53,9 @@ Table Booking {
   id String [pk]
   email String [not null]
   totalAmount Float [not null]
+  status BookingStatus [not null, default: 'unpaid']
   createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   tickets Ticket [not null]
 }
 
@@ -82,6 +84,11 @@ Enum Role {
   admin
   staff
   test_staff
+}
+
+Enum BookingStatus {
+  unpaid
+  paid
 }
 
 Enum SeatStatus {

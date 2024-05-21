@@ -70,12 +70,19 @@ model Seat {
 }
 
 model Booking {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   email       String
   totalAmount Float
-  createdAt   DateTime @default(now())
+  status      BookingStatus @default(unpaid)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   tickets Ticket[]
+}
+
+enum BookingStatus {
+  unpaid
+  paid
 }
 
 model Ticket {
