@@ -2,6 +2,7 @@
 
 import { bookingClientSchema } from "@/validators/booking"
 import { Prisma } from "@prisma/client"
+import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import db from "prisma/db"
 
@@ -96,4 +97,11 @@ export async function makeBooking(data: {
   })
 
   redirect("/success?bookingId=" + updatedBooking.id)
+}
+
+export async function paid(bookingId: string) {
+  const booking = await db.booking.findUnique({ where: { id: bookingId } })
+  if (!booking || booking.status === "paid") return
+  await db.booking.update({ where: { id: bookingId }, data: { status: "paid" } })
+  revalidatePath("/success?bookingId=" + bookingId)
 }
