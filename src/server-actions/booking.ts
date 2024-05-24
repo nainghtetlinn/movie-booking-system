@@ -5,6 +5,8 @@ import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import db from "prisma/db"
+import { Resend } from "resend"
+import SuccessBooking from "emails/success-booking"
 
 export async function getMovies() {
   return await db.movie.findMany({
@@ -99,9 +101,35 @@ export async function makeBooking(data: {
   redirect("/success?bookingId=" + updatedBooking.id)
 }
 
+const resend = new Resend(process.env.RESEND_API_KEY!)
+
 export async function paid(bookingId: string) {
   const booking = await db.booking.findUnique({ where: { id: bookingId } })
   if (!booking || booking.status === "paid") return
-  await db.booking.update({ where: { id: bookingId }, data: { status: "paid" } })
+
+  const updatedBooking = await db.booking.update({
+    where: { id: bookingId },
+    data: { status: "paid" },
+    include: {
+      tickets: {
+        include: {
+          show: {
+            include: {
+              movie: true,
+            },
+          },
+          seat: true,
+        },
+      },
+    },
+  })
+
+  await resend.emails.send({
+    from: process.env.RESEND_DOMAIN!,
+    to: updatedBooking.email,
+    subject: "Thanks for your booking.",
+    react: SuccessBooking({ booking: updatedBooking }),
+  })
+
   revalidatePath("/success?bookingId=" + bookingId)
 }
