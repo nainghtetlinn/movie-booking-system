@@ -1,3 +1,5 @@
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { CircleAlert } from "lucide-react"
 import Hero from "./_components/Hero"
 import NowPlaying from "./_components/NowPlaying"
 import Shows from "./_components/Shows"
@@ -6,7 +8,7 @@ import Movies from "./_components/Movies"
 import db from "prisma/db"
 
 const Home = async () => {
-  const today = new Date()
+  const today = new Date(2024, 5, 2, 11)
   const startDate = new Date(today)
   startDate.setHours(0, 0, 0, 0)
 
@@ -47,7 +49,14 @@ const Home = async () => {
   return (
     <>
       <Hero />
-      {nowPlaying && <NowPlaying show={nowPlaying} />}
+      <div className="container">
+        <Alert>
+          <CircleAlert className="h-5 w-5" />
+          <AlertTitle>Warning</AlertTitle>
+          <AlertDescription>Today date is hard coded {today.toISOString()}</AlertDescription>
+        </Alert>
+      </div>
+      <NowPlaying show={nowPlaying} />
       <Movies movies={movies} />
       <Shows shows={shows} />
     </>

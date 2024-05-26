@@ -108,7 +108,10 @@ const Carousel = ({ items, render, options }: Props<any>) => {
   }, [api])
 
   return (
-    <ShadcnCarousel setApi={setApi} opts={{ loop: true, align: "center", ...options }}>
+    <ShadcnCarousel
+      className="sm:container"
+      setApi={setApi}
+      opts={{ loop: true, align: "center", ...options }}>
       <CarouselContent>
         {items.length > 0
           ? items.map((item, i) => (
@@ -118,8 +121,8 @@ const Carousel = ({ items, render, options }: Props<any>) => {
             ))
           : null}
       </CarouselContent>
-      <CarouselPrevious className="left-2" />
-      <CarouselNext className="right-2" />
+      <CarouselPrevious className="left-2 sm:left-0" />
+      <CarouselNext className="right-2 sm:right-0" />
     </ShadcnCarousel>
   )
 }
