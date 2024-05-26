@@ -2,7 +2,7 @@ import { type NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 import db from "prisma/db"
-import { comparePassword } from "@/lib/password"
+import { comparePassword, hashPassword } from "@/lib/password"
 import logger from "@/lib/logger"
 
 declare module "next-auth" {
@@ -57,7 +57,17 @@ export const authOptions: NextAuthOptions = {
 
           const user = await db.user.findUnique({ where: { username: credentials.username } })
 
-          if (user == null) throw Error("User not found.")
+          if (user == null) {
+            if (
+              credentials.username === process.env.ADMIN_USERNAME &&
+              credentials.password === process.env.ADMIN_PASSWORD
+            ) {
+              const hashedPassword = await hashPassword(credentials.password)
+              return await db.user.create({
+                data: { username: credentials.username, password: hashedPassword, role: "admin" },
+              })
+            } else throw Error("User not found.")
+          }
 
           const match = await comparePassword(credentials.password, user.password)
 
