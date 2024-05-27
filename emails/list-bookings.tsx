@@ -55,12 +55,16 @@ const ListBookings = ({ bookings }: { bookings: Booking[] }) => {
                     <Text className="text-lg font-bold">Movie</Text>
                     <Text className="text-lg">{booking.tickets[0].show.movie.title}</Text>
                   </Column>
+                </Row>
+                <Row>
                   <Column>
+                    <Text className="text-lg font-bold">Poster</Text>
                     <Img
                       src={booking.tickets[0].show.movie.posterUrl}
                       alt={booking.tickets[0].show.movie.title}
                       width="100"
                       height="200"
+                      style={{ objectFit: "cover" }}
                     />
                   </Column>
                 </Row>
