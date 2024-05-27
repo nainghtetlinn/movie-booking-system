@@ -1,10 +1,8 @@
 "use server"
 
-import { Resend } from "resend"
-import db from "prisma/db"
+import resend from "@/configs/resend"
 import ListBookings from "emails/list-bookings"
-
-const resend = new Resend(process.env.RESEND_API_KEY!)
+import db from "prisma/db"
 
 export async function listTicekts(email: string) {
   const bookings = await db.booking.findMany({
