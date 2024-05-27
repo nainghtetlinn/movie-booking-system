@@ -2,6 +2,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { CircleAlert } from "lucide-react"
 import Hero from "./_components/Hero"
 import NowPlaying from "./_components/NowPlaying"
+import TodayShows from "./_components/TodayShows"
 import Shows from "./_components/Shows"
 import Movies from "./_components/Movies"
 
@@ -11,6 +12,8 @@ const Home = async () => {
   const today = new Date(2024, 5, 2, 11)
   const startDate = new Date(today)
   startDate.setHours(0, 0, 0, 0)
+  const endDate = new Date(today)
+  endDate.setHours(23, 59, 59)
 
   const shows = await db.show.findMany({
     where: {
@@ -46,6 +49,21 @@ const Home = async () => {
     },
   })
 
+  const todayShows = await db.show.findMany({
+    where: {
+      date: {
+        gte: startDate.toISOString(),
+        lte: endDate.toISOString(),
+      },
+    },
+    include: {
+      movie: true,
+    },
+    orderBy: {
+      startTime: "asc",
+    },
+  })
+
   return (
     <>
       <Hero />
@@ -57,6 +75,7 @@ const Home = async () => {
         </Alert>
       </div>
       <NowPlaying show={nowPlaying} />
+      <TodayShows shows={todayShows} />
       <Movies movies={movies} />
       <Shows shows={shows} />
     </>
