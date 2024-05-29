@@ -11,6 +11,7 @@ import {
   Column,
   Hr,
   Img,
+  Link,
 } from "@react-email/components"
 
 import { Prisma } from "@prisma/client"
@@ -30,6 +31,8 @@ type Booking = Prisma.BookingGetPayload<{
     }
   }
 }>
+
+const baseUrl = process.env.NEXTAUTH_URL!
 
 const ListBookings = ({ bookings }: { bookings: Booking[] }) => {
   return (
@@ -99,6 +102,15 @@ const ListBookings = ({ bookings }: { bookings: Booking[] }) => {
                     <Text className="text-lg font-bold">Status</Text>
                     <Text className="text-lg">{booking.status.toUpperCase()}</Text>
                   </Column>
+                  {booking.status === "unpaid" && (
+                    <Column>
+                      <Link
+                        className="text-lg font-bold"
+                        href={`${baseUrl}/success?bookingId=${booking.id}`}>
+                        Make a payment.
+                      </Link>
+                    </Column>
+                  )}
                 </Row>
                 <Hr />
               </Section>

@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import PayBtn from "./_components/PayBtn"
 
 import { formatShowTime } from "@/lib/utils"
 import { paid } from "@/server-actions/booking"
@@ -83,9 +84,7 @@ const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: strin
         </Card>
 
         <div className="flex justify-center">
-          <form action={paid.bind(null, booking.id)}>
-            <Button type="submit">Fake Pay</Button>
-          </form>
+          <PayBtn id={booking.id} />
         </div>
         <p className="mt-4 rounded-lg border border-yellow-600 bg-yellow-400/30 p-8 text-center">
           Booking will be automatically cancelled if it was not paid within 1 hour.
