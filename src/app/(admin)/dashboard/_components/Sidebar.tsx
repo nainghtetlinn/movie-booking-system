@@ -72,7 +72,7 @@ const links = [
   { href: "/dashboard", title: "Dashboard", icon: Home },
   { href: "/dashboard/movies", title: "Movies", icon: Film },
   { href: "/dashboard/shows", title: "Shows", icon: Clapperboard },
-  { href: "/dashboard/tickets", title: "Tickets", icon: Ticket },
+  { href: "/dashboard/bookings", title: "Bookings", icon: Ticket },
   { href: "/dashboard/staffs", title: "Staffs", icon: Users },
 ]
 
