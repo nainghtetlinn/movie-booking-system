@@ -1,17 +1,18 @@
 import ShowsTable from "./ShowsTable"
 
 import db from "prisma/db"
+import { fetchDashboardShows } from "@/server-actions/show"
+import { redirect } from "next/navigation"
 
-const Shows = async () => {
-  const shows = await db.show.findMany({
-    include: {
-      movie: { select: { title: true, posterUrl: true } },
-      _count: { select: { tickets: true } },
-    },
-    orderBy: {
-      startTime: "asc",
-    },
-  })
+const Shows = async ({
+  searchParams,
+}: {
+  searchParams: { filter?: "all" | "showing" | "upcoming" }
+}) => {
+  if (searchParams.filter && !["all", "showing", "upcoming"].includes(searchParams.filter))
+    redirect("/dashboard/shows")
+
+  const shows = await fetchDashboardShows(searchParams.filter || "all")
 
   const movies = await db.movie.findMany({
     select: { id: true, title: true },

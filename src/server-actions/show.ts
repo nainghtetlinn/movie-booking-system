@@ -55,3 +55,29 @@ export async function deleteShow(id: string): Promise<TReturn> {
     return { success: false, message: "Something went wrong." }
   }
 }
+
+export const fetchDashboardShows = async (filter: "all" | "showing" | "upcoming") => {
+  let where = {}
+  let start = new Date(2024, 5, 2)
+  let end = new Date(2024, 5, 3)
+
+  if (filter === "showing")
+    where = {
+      date: { gte: start.toISOString(), lte: end.toISOString() },
+    }
+  else if (filter === "upcoming")
+    where = {
+      date: { gte: end.toISOString() },
+    }
+
+  return await db.show.findMany({
+    include: {
+      movie: { select: { title: true, posterUrl: true } },
+      _count: { select: { tickets: true } },
+    },
+    where,
+    orderBy: {
+      startTime: "asc",
+    },
+  })
+}
