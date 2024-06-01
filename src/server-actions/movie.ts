@@ -41,3 +41,26 @@ export async function deleteMovie(id: string): Promise<TReturn> {
     return { success: false, message: "Something went wrong." }
   }
 }
+
+export const fetchDashboardMovies = async (filter: "all" | "showing" | "upcoming") => {
+  let where = {}
+  let start = new Date(2024, 5, 2)
+  let end = new Date(2024, 5, 3)
+
+  if (filter === "showing")
+    where = {
+      releaseDate: { gte: start.toISOString(), lte: end.toISOString() },
+    }
+  else if (filter === "upcoming")
+    where = {
+      releaseDate: { gte: end.toISOString() },
+    }
+
+  return await db.movie.findMany({
+    include: {
+      _count: true,
+    },
+    where,
+    orderBy: { createdAt: "desc" },
+  })
+}

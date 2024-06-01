@@ -1,8 +1,8 @@
 "use client"
 
+import Filter from "@/components/Filter"
 import Table from "@/components/Table"
 import ToggleTableViewBtn from "@/components/ToggleTableViewBtn"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import CreateMovieBtn from "./_components/CreateMovieBtn"
 
 import { useTable } from "@/hooks/useTable"
@@ -15,11 +15,11 @@ const MoviesTable = ({ movies }: { movies: TMovieTableItem[] }) => {
   return (
     <>
       <div className="mb-4 flex items-center justify-between">
-        <ToggleGroup type="single" defaultValue="all">
-          <ToggleGroupItem value="all">All</ToggleGroupItem>
-          <ToggleGroupItem value="showing">Showing</ToggleGroupItem>
-          <ToggleGroupItem value="upcoming">Upcoming</ToggleGroupItem>
-        </ToggleGroup>
+        <Filter
+          searchParamKey="filter"
+          defaultOptions="all"
+          options={["all", "showing", "upcoming"]}
+        />
         <div className="space-x-2">
           <ToggleTableViewBtn table={table} />
           <CreateMovieBtn />
