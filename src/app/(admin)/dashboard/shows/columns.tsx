@@ -12,7 +12,14 @@ export const columns: ColumnDef<TShowTableItem>[] = [
     id: "poster",
     accessorKey: "movie.posterUrl",
     header: "Poster",
-    cell: ({ row }) => <img src={row.getValue("poster")} alt={row.getValue("title")} width={60} />,
+    cell: ({ row }) => (
+      <img
+        src={row.getValue("poster")}
+        alt={row.getValue("title")}
+        width={60}
+        className="aspect-[2/3]"
+      />
+    ),
   },
   {
     id: "title",
