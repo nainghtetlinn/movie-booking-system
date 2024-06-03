@@ -131,3 +131,39 @@ export async function paid(bookingId: string) {
 
   revalidatePath("/success?bookingId=" + bookingId)
 }
+
+export const fetchDashboardBookings = async (filter: "all" | "paid" | "unpaid") => {
+  let where = {}
+
+  if (filter === "paid") where = { status: "paid" }
+  else if (filter === "unpaid") where = { status: "unpaid" }
+
+  return await db.booking.findMany({
+    include: {
+      tickets: {
+        include: {
+          seat: {
+            select: {
+              class: true,
+              row: true,
+              number: true,
+            },
+          },
+          show: {
+            include: {
+              movie: {
+                select: {
+                  title: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    where,
+    orderBy: {
+      createdAt: "desc",
+    },
+  })
+}
