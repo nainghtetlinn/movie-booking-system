@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowDown, ArrowUp } from "lucide-react"
+import { ArrowDown, ArrowUp, ArrowDownUp } from "lucide-react"
 
 import { Column } from "@tanstack/react-table"
 
@@ -13,6 +13,7 @@ const TableSortingBtn = ({ title, column }: Props) => {
     <Button
       variant="ghost"
       size="sm"
+      className="-ml-4"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
       {title}
       {column.getIsSorted() ? (
@@ -21,7 +22,9 @@ const TableSortingBtn = ({ title, column }: Props) => {
         ) : (
           <ArrowDown className="ml-2 h-4 w-4" />
         )
-      ) : null}
+      ) : (
+        <ArrowDownUp className="ml-2 h-4 w-4" />
+      )}
     </Button>
   )
 }
