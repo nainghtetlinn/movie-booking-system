@@ -1,15 +1,17 @@
 import StaffsTable from "./StaffsTable"
 
-import db from "prisma/db"
+import { fetchDashboardStaffs } from "@/server-actions/staff"
+import { redirect } from "next/navigation"
 
-const Staffs = async () => {
-  const staffs = await db.user.findMany({
-    select: {
-      id: true,
-      username: true,
-      role: true,
-    },
-  })
+const Staffs = async ({
+  searchParams,
+}: {
+  searchParams: { filter?: "all" | "admin" | "staff" }
+}) => {
+  if (searchParams.filter && !["all", "admin", "staff"].includes(searchParams.filter))
+    redirect("/dashboard/staffs")
+
+  const staffs = await fetchDashboardStaffs(searchParams.filter || "all")
 
   return (
     <>

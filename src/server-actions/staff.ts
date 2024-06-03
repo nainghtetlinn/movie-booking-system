@@ -45,3 +45,24 @@ export async function deleteStaff(id: string): Promise<TReturn> {
     return { success: false, message: "Something went wrong." }
   }
 }
+
+export const fetchDashboardStaffs = async (filter: "all" | "admin" | "staff") => {
+  let where = {}
+
+  if (filter === "admin") where = { role: "admin" }
+  else if (filter === "staff")
+    where = {
+      role: {
+        in: ["staff", "test_staff"],
+      },
+    }
+
+  return await db.user.findMany({
+    select: {
+      id: true,
+      username: true,
+      role: true,
+    },
+    where,
+  })
+}
