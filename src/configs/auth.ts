@@ -1,22 +1,24 @@
+import { Role } from "@prisma/client"
 import { type NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
-import db from "prisma/db"
-import { comparePassword, hashPassword } from "@/lib/password"
 import logger from "@/lib/logger"
+import { comparePassword, hashPassword } from "@/lib/password"
+import { getServerSession } from "next-auth"
+import db from "prisma/db"
 
 declare module "next-auth" {
   interface User {
     id: string
     username: string
-    role: string
+    role: Role
   }
 
   interface Session {
     user: {
       id: string
       username: string
-      role: string
+      role: Role
     }
   }
 }
@@ -25,7 +27,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string
     username: string
-    role: string
+    role: Role
   }
 }
 
@@ -98,4 +100,10 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
+}
+
+export const checkPermission = async () => {
+  const session = await getServerSession(authOptions)
+  if (session?.user.role === "admin" || session?.user.role === "staff") return true
+  return false
 }

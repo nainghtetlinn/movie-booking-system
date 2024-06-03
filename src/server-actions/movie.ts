@@ -1,5 +1,6 @@
 "use server"
 
+import { checkPermission } from "@/configs/auth"
 import { TMovie } from "@/types/movie"
 import { movieSchema } from "@/validators/movie"
 import { Movie } from "@prisma/client"
@@ -9,6 +10,9 @@ import db from "prisma/db"
 type TReturn = { success: true; data: Movie } | { success: false; message: string }
 
 export async function createMovie(data: TMovie): Promise<TReturn> {
+  const isAllow = await checkPermission()
+  if (!isAllow) return { success: false, message: "Permission denied." }
+
   try {
     const validation = movieSchema.safeParse(data)
     if (!validation.success) return { success: false, message: "Invalid inputs." }
@@ -21,6 +25,9 @@ export async function createMovie(data: TMovie): Promise<TReturn> {
 }
 
 export async function editMovie(id: string, data: TMovie): Promise<TReturn> {
+  const isAllow = await checkPermission()
+  if (!isAllow) return { success: false, message: "Permission denied." }
+
   try {
     const validation = movieSchema.safeParse(data)
     if (!validation.success) return { success: false, message: "Invalid inputs." }
@@ -33,6 +40,9 @@ export async function editMovie(id: string, data: TMovie): Promise<TReturn> {
 }
 
 export async function deleteMovie(id: string): Promise<TReturn> {
+  const isAllow = await checkPermission()
+  if (!isAllow) return { success: false, message: "Permission denied." }
+
   try {
     const movie = await db.movie.delete({ where: { id } })
     revalidatePath("/dashboard/movies")
