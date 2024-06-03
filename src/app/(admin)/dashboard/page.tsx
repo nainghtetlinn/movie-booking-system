@@ -1,11 +1,15 @@
 import DashboardGrid from "./_components/DashboardGrid"
-import Range from "./_components/Range"
+import Filter from "@/components/Filter"
 
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query"
 import { fetchDashboardData } from "@/server-actions/dashboard"
 import { redirect } from "next/navigation"
 
-const Dashboard = async ({ searchParams }: { searchParams: { range?: string } }) => {
+const Dashboard = async ({
+  searchParams,
+}: {
+  searchParams: { range?: "day" | "week" | "month" }
+}) => {
   const qc = new QueryClient()
 
   await qc.prefetchQuery({
@@ -27,7 +31,7 @@ const Dashboard = async ({ searchParams }: { searchParams: { range?: string } })
       <section className="p-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-3xl font-bold">Dashboard</h2>
-          <Range />
+          <Filter searchParamKey="range" defaultOptions="day" options={["day", "week", "month"]} />
         </div>
         <HydrationBoundary state={dehydrate(qc)}>
           <DashboardGrid range={searchParams.range || "day"} />
