@@ -115,7 +115,7 @@ const Carousel = ({ items, render, options }: Props<any>) => {
       <CarouselContent>
         {items.length > 0
           ? items.map((item, i) => (
-              <CarouselItem key={i} className="basis-1/2 md:basis-1/3 lg:basis-1/4">
+              <CarouselItem key={i} className="basis-1/2 md:basis-1/3 xl:basis-1/4">
                 <div className="embla__slide__number">{render(item)}</div>
               </CarouselItem>
             ))
