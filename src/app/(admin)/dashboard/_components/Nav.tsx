@@ -4,7 +4,7 @@ import DarkModeBtn from "@/components/DarkModeBtn"
 import Profile from "@/components/Profile"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Clapperboard, Film, Home, Menu, Ticket, Users } from "lucide-react"
+import { CircleUser, Clapperboard, Film, Home, Menu, Ticket, Users } from "lucide-react"
 import Link from "next/link"
 
 import { useScrollDirection } from "@/hooks/useScrollDirection"
@@ -44,6 +44,7 @@ const links = [
   { href: "/dashboard/shows", title: "Shows", icon: Clapperboard },
   { href: "/dashboard/bookings", title: "Bookings", icon: Ticket },
   { href: "/dashboard/staffs", title: "Staffs", icon: Users },
+  { href: "/dashboard/profile", title: "Profile", icon: CircleUser },
 ]
 
 const SideNav = ({ path }: { path: string }) => {

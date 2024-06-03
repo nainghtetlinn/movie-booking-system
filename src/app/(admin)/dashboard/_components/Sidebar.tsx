@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Clapperboard, Film, Home, Menu, Ticket, Users, X } from "lucide-react"
+import { CircleUser, Clapperboard, Film, Home, Menu, Ticket, Users, X } from "lucide-react"
 
 import clsx from "clsx"
 import { useSession } from "next-auth/react"
@@ -74,6 +74,7 @@ const links = [
   { href: "/dashboard/shows", title: "Shows", icon: Clapperboard },
   { href: "/dashboard/bookings", title: "Bookings", icon: Ticket },
   { href: "/dashboard/staffs", title: "Staffs", icon: Users },
+  { href: "/dashboard/profile", title: "Profile", icon: CircleUser },
 ]
 
 export default Sidebar
