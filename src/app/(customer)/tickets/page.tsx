@@ -48,7 +48,7 @@ const TicketsPage = () => {
   }
 
   return (
-    <main className="container py-12">
+    <main className="container min-h-[80vh] py-4">
       <Card className="mx-auto max-w-[600px]">
         <CardHeader>
           <CardTitle>List your bookings.</CardTitle>

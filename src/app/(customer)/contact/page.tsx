@@ -5,7 +5,7 @@ import Link from "next/link"
 
 const ContactPage = () => {
   return (
-    <section className="container">
+    <main className="container min-h-[80vh]">
       <TitleTypography>Contact</TitleTypography>
       <div className="flex gap-4">
         <Button asChild variant="outline" size="icon">
@@ -34,7 +34,7 @@ const ContactPage = () => {
           </Link>
         </Button>
       </div>
-    </section>
+    </main>
   )
 }
 

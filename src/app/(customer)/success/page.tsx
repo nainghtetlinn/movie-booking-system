@@ -32,7 +32,7 @@ const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: strin
 
   if (booking.status === "unpaid") {
     return (
-      <main className="container py-12">
+      <main className="container min-h-[80vh] py-12">
         <h1 className="text-center text-3xl font-bold">Thank You!!!</h1>
         <h2 className="mt-4 text-center text-lg">Your Booking Have Successful!</h2>
 
@@ -92,7 +92,7 @@ const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: strin
     )
   } else
     return (
-      <main className="container py-12">
+      <main className="container min-h-[80vh] py-12">
         <h1 className="text-center text-3xl font-bold">Success!!!</h1>
         <h2 className="mt-4 text-center text-lg">We have sent booking details to your email!</h2>
 

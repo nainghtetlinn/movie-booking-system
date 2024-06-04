@@ -25,7 +25,7 @@ const MoviePage = async ({ params }: { params: { name: string } }) => {
   if (!movie) notFound()
 
   return (
-    <section className="p-4">
+    <main className="container min-h-[80vh] py-4">
       <Card className="mx-auto max-w-lg">
         <CardHeader>
           <CardTitle>{movie.title}</CardTitle>
@@ -53,7 +53,7 @@ const MoviePage = async ({ params }: { params: { name: string } }) => {
           </Button>
         </CardFooter>
       </Card>
-    </section>
+    </main>
   )
 }
 

@@ -29,12 +29,12 @@ const BookingPage = async ({
 
   return (
     <>
-      <section className="container">
+      <main className="container min-h-[80vh]">
         <TitleTypography>Booking</TitleTypography>
         <HydrationBoundary state={dehydrate(qc)}>
           <BookingForm />
         </HydrationBoundary>
-      </section>
+      </main>
     </>
   )
 }
