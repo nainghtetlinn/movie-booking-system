@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner"
 import QueryProvider from "@/providers/query-provider"
 import SessionProvider from "@/providers/session-provider"
 import ThemeProvider from "@/providers/theme-provider"
+import Footer from "@/components/Footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,6 +30,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange>
               <main>{children}</main>
+              <Footer />
               <Toaster />
             </ThemeProvider>
           </QueryProvider>
