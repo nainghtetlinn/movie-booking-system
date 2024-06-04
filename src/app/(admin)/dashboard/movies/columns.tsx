@@ -4,6 +4,7 @@ import TableSortingBtn from "@/components/TableSortingBtn"
 import { Badge } from "@/components/ui/badge"
 import ActionsBtn from "./_components/ActionsBtn"
 
+import Image from "next/image"
 import { formatTime } from "@/lib/utils"
 import { TMovieTableItem } from "@/types/movie"
 import { ColumnDef } from "@tanstack/react-table"
@@ -15,11 +16,12 @@ export const columns: ColumnDef<TMovieTableItem>[] = [
     accessorKey: "posterUrl",
     header: "Poster",
     cell: ({ row }) => (
-      <img
+      <Image
         src={row.getValue("poster")}
         alt={row.getValue("title")}
         width={60}
-        className="aspect-[2/3]"
+        height={90}
+        className="aspect-[2/3] object-cover"
       />
     ),
   },

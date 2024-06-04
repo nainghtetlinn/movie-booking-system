@@ -105,7 +105,7 @@ const Carousel = ({ items, render, options }: Props<any>) => {
       .on("reInit", setTweenOpacityFactor)
       .on("reInit", tweenScaleAndOpacity)
       .on("scroll", tweenScaleAndOpacity)
-  }, [api])
+  }, [api, setTweenNodes, setTweenOpacityFactor, setTweenScaleFactor, tweenScaleAndOpacity])
 
   return (
     <ShadcnCarousel

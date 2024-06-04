@@ -123,7 +123,8 @@ const DeleteMovieBtn = ({ movie, close }: { movie: TMovieTableItem; close: () =>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Do you really want to delete <span className="text-2xl">"{movie.title}"</span> ?
+              Do you really want to delete{" "}
+              <span className="text-2xl">&quot;{movie.title}&quot;</span> ?
             </DialogTitle>
             <DialogDescription>
               Please delete related shows first, otherwise it will fail.

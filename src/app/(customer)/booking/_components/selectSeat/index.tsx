@@ -46,7 +46,7 @@ const SelectSeat = () => {
     }
 
     return groupedByClass
-  }, [data])
+  }, [data, isSuccess])
 
   if (isLoading) return <Skeleton className="h-32" />
 

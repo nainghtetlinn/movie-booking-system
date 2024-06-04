@@ -12,7 +12,6 @@ import {
 import PayBtn from "./_components/PayBtn"
 
 import { formatShowTime } from "@/lib/utils"
-import { paid } from "@/server-actions/booking"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import db from "prisma/db"

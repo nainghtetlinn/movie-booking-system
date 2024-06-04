@@ -87,15 +87,11 @@ export async function makeBooking(data: {
     where: { id: booking.id },
     data: { totalAmount },
   })
+
   // update seat status
   await db.showSeatRelation.updateMany({
     where: { showId: show.id, seatId: { in: seatIds } },
     data: { status: "purchased" },
-  })
-
-  const createdTickets = await db.ticket.findMany({
-    where: { bookingId: booking.id },
-    include: { show: true, seat: true },
   })
 
   redirect("/success?bookingId=" + updatedBooking.id)

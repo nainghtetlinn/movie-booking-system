@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 
+import Image from "next/image"
 import { formatTime } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
 import { getMovies } from "@/server-actions/booking"
@@ -49,10 +50,12 @@ const SelectMovie = () => {
                       <div
                         className="relative aspect-[2/3] w-14 overflow-hidden rounded-md"
                         data-image>
-                        <img
+                        <Image
                           src={movie.posterUrl}
                           alt={`Poster of ${movie.title}`}
                           className="h-full w-full object-cover"
+                          width={56}
+                          height={84}
                         />
                       </div>
                       <div>

@@ -1,6 +1,5 @@
 "use client"
 
-import TableSortingBtn from "@/components/TableSortingBtn"
 import { Badge } from "@/components/ui/badge"
 
 import { TBookingTableItem } from "@/types/booking"

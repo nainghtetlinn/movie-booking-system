@@ -123,8 +123,8 @@ const DeleteShowBtn = ({ show, close }: { show: TShowTableItem; close: () => voi
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Do you really want to delete the show of
-              <span className="text-2xl"> "{show.movie.title}"</span> ?
+              Do you really want to delete the show of{" "}
+              <span className="text-2xl">&quot;{show.movie.title}&quot;</span> ?
             </DialogTitle>
             <DialogDescription>
               If there is bookings related to this show, it will fail.

@@ -3,7 +3,7 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 const Filter = ({
   searchParamKey,

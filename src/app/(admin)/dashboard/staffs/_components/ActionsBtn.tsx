@@ -72,8 +72,8 @@ const DeleteStaffBtn = ({ staff, close }: { staff: TStaffTableItem; close: () =>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Do you really want to delete the staff of
-              <span className="text-2xl"> "{staff.username}"</span> ?
+              Do you really want to delete the staff of{" "}
+              <span className="text-2xl">&quot;{staff.username}&quot;</span> ?
             </DialogTitle>
             <DialogDescription>
               Related bookings will not be deleted, even if you delete staff.

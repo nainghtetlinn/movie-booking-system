@@ -3,7 +3,6 @@
 import Filter from "@/components/Filter"
 import Table from "@/components/Table"
 import ToggleTableViewBtn from "@/components/ToggleTableViewBtn"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
 import { useTable } from "@/hooks/useTable"
 import { TBookingTableItem } from "@/types/booking"

@@ -3,6 +3,7 @@
 import TableSortingBtn from "@/components/TableSortingBtn"
 import ActionsBtn from "./_components/ActionsBtn"
 
+import Image from "next/image"
 import { TShowTableItem } from "@/types/show"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
@@ -13,11 +14,12 @@ export const columns: ColumnDef<TShowTableItem>[] = [
     accessorKey: "movie.posterUrl",
     header: "Poster",
     cell: ({ row }) => (
-      <img
+      <Image
         src={row.getValue("poster")}
         alt={row.getValue("title")}
         width={60}
-        className="aspect-[2/3]"
+        height={90}
+        className="aspect-[2/3] object-cover"
       />
     ),
   },

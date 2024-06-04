@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 
+import Image from "next/image"
 import { useBookingFormContext } from "../booking-hooks"
 import { useQuery } from "@tanstack/react-query"
 import { getCheckout } from "@/server-actions/booking"
@@ -45,10 +46,12 @@ const Checkout = () => {
           <div
             className="relative aspect-[2/3] w-20 shrink-0 self-start overflow-hidden rounded-md md:w-28"
             data-image>
-            <img
+            <Image
               src={data.movie.posterUrl}
               alt={`Poster of ${data.movie.title}`}
               className="h-full w-full object-cover"
+              width={80}
+              height={120}
             />
           </div>
           <div className="md:text-lg">
