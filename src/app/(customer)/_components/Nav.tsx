@@ -29,7 +29,9 @@ const Nav = () => {
           direction == "up" && "py-4",
         )}>
         <div className="container flex items-center justify-between py-2">
-          <h4 className="text-lg font-semibold">Movie Booking System</h4>
+          <h4 className="text-lg font-semibold">
+            <Link href="/">Movie Booking System</Link>
+          </h4>
           <div className="flex items-center space-x-4">
             <MobileMenu path={path} />
             <NavLinks path={path} />
