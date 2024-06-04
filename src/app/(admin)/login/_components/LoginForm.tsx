@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Loader2 } from "lucide-react"
 
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
@@ -31,9 +32,12 @@ const LoginForm = () => {
   const callbackUrl = searchParams.get("callbackUrl")
   const form = useLoginForm()
   const [show, setShow] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const onSubmit = (e: TLogin) => {
-    signIn("credentials", { ...e, callbackUrl: callbackUrl || undefined })
+  const onSubmit = async (e: TLogin) => {
+    setLoading(true)
+    await signIn("credentials", { ...e, callbackUrl: callbackUrl || undefined })
+    setLoading(false)
   }
 
   return (
@@ -79,7 +83,9 @@ const LoginForm = () => {
                 Show password
               </label>
             </div>
-            <Button type="submit">Login</Button>
+            <Button type="submit" disabled={loading}>
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Login
+            </Button>
           </CardFooter>
         </Card>
       </form>

@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import logger from "@/lib/logger"
 import { comparePassword, hashPassword } from "@/lib/password"
 import { getServerSession } from "next-auth"
-import db from "prisma/db"
+import db, { exclude } from "prisma/db"
 
 declare module "next-auth" {
   interface User {
@@ -73,11 +73,11 @@ export const authOptions: NextAuthOptions = {
 
           const match = await comparePassword(credentials.password, user.password)
 
-          if (match) return user
+          if (match) return exclude(user, "password")
           else throw Error("Invalid credentials.")
         } catch (error: any) {
           logger.error("Error: ", error.message)
-          return null
+          throw new Error(error.message)
         }
       },
     }),
