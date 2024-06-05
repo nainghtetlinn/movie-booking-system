@@ -1,6 +1,7 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
+import ActionsBtn from "./_components/ActionsBtn"
 
 import { TBookingTableItem } from "@/types/booking"
 import { ColumnDef } from "@tanstack/react-table"
@@ -41,5 +42,10 @@ export const columns: ColumnDef<TBookingTableItem>[] = [
     header: "Status",
     accessorFn: (row) => row.status,
     cell: ({ row }) => <Badge variant="outline">{row.getValue("status")}</Badge>,
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => <ActionsBtn booking={row.original} />,
   },
 ]

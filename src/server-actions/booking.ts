@@ -1,5 +1,6 @@
 "use server"
 
+import { checkPermission } from "@/configs/auth"
 import resend from "@/configs/resend"
 import { bookingClientSchema } from "@/validators/booking"
 import { Prisma } from "@prisma/client"
@@ -95,6 +96,34 @@ export async function makeBooking(data: {
   })
 
   redirect("/success?bookingId=" + updatedBooking.id)
+}
+
+export async function deleteBooking(id: string) {
+  const isAllow = await checkPermission()
+  if (!isAllow) return { success: false, message: "Permission denied." }
+
+  try {
+    // find tickets
+    const tickets = await db.ticket.findMany({ where: { bookingId: id } })
+    const seatIds = tickets.map((t) => t.seatId)
+    const showId = tickets[0].showId
+
+    // set status available to all seats related to show
+    await db.showSeatRelation.updateMany({
+      where: { showId, seatId: { in: seatIds } },
+      data: { status: "available" },
+    })
+
+    // delete tickets
+    await db.ticket.deleteMany({ where: { bookingId: id } })
+
+    // delete booking
+    const booking = await db.booking.delete({ where: { id } })
+    revalidatePath("/dashboard/bookings")
+    return { success: true, data: booking.id }
+  } catch (error) {
+    return { success: false, message: "Something went wrong." }
+  }
 }
 
 export async function paid(bookingId: string) {
