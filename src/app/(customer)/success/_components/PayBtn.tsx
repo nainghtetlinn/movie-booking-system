@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 
-import { paid } from "@/server-actions/booking"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -13,8 +12,8 @@ const PayBtn = ({ id }: { id: string }) => {
   const pay = async () => {
     setLoading(true)
     try {
-      await paid(id)
-      toast.success("Success! Please check your email.")
+      // await paid(id)
+      toast.success("Fake pay feature is currently disabled for project showcase.")
     } catch (error) {
       toast.error("Something went wrong.")
     }
