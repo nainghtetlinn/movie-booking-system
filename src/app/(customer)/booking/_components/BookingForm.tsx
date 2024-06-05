@@ -16,6 +16,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { makeBooking } from "@/server-actions/booking"
 import { useBookingForm } from "./booking-hooks"
+import { redirect } from "next/navigation"
 
 const BookingForm = () => {
   const searchParams = useSearchParams()
@@ -29,10 +30,14 @@ const BookingForm = () => {
     setLoading(true)
     try {
       await makeBooking(data)
+      toast.success("Booking success.")
     } catch (error) {
       toast.error("Something went worng.")
+    } finally {
+      setLoading(false)
+      form.reset()
+      setActiveStep(0)
     }
-    setLoading(false)
   }
 
   const [activeStep, setActiveStep] = useState(0)
