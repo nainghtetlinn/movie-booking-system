@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import logger from "@/lib/logger"
 import { comparePassword, hashPassword } from "@/lib/password"
 import { getServerSession } from "next-auth"
-import db, { exclude } from "prisma/db"
+import db, { exclude } from "@/configs/db"
 
 declare module "next-auth" {
   interface User {

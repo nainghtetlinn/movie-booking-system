@@ -1,6 +1,6 @@
 "use server"
 
-import db from "prisma/db"
+import db from "@/configs/db"
 
 export const fetchDashboardData = async (range: "day" | "week" | "month" | string) => {
   let start = new Date(2024, 5, 2)

@@ -5,7 +5,7 @@ import { TMovie } from "@/types/movie"
 import { movieSchema } from "@/validators/movie"
 import { Movie } from "@prisma/client"
 import { revalidatePath } from "next/cache"
-import db from "prisma/db"
+import db from "@/configs/db"
 
 type TReturn = { success: true; data: Movie } | { success: false; message: string }
 

@@ -1,6 +1,6 @@
 import ShowsTable from "./ShowsTable"
 
-import db from "prisma/db"
+import db from "@/configs/db"
 import { fetchDashboardShows } from "@/server-actions/show"
 import { redirect } from "next/navigation"
 

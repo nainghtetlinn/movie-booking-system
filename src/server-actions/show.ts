@@ -5,7 +5,7 @@ import { TShow } from "@/types/show"
 import { showSchema } from "@/validators/show"
 import { Prisma, Show } from "@prisma/client"
 import { revalidatePath } from "next/cache"
-import db from "prisma/db"
+import db from "@/configs/db"
 
 type TReturn = { success: true; data: Show } | { success: false; message: string }
 

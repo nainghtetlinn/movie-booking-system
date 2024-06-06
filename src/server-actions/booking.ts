@@ -7,7 +7,7 @@ import { Prisma } from "@prisma/client"
 import SuccessBooking from "emails/success-booking"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import db from "prisma/db"
+import db from "@/configs/db"
 
 export async function getMovies() {
   return await db.movie.findMany({

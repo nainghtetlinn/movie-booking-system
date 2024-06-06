@@ -14,7 +14,7 @@ import PayBtn from "./_components/PayBtn"
 import { formatShowTime } from "@/lib/utils"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import db from "prisma/db"
+import db from "@/configs/db"
 
 const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: string } }) => {
   if (!searchParams.bookingId) {

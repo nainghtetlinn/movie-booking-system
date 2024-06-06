@@ -6,7 +6,7 @@ import TodayShows from "./_components/TodayShows"
 import Shows from "./_components/Shows"
 import Movies from "./_components/Movies"
 
-import db from "prisma/db"
+import db from "@/configs/db"
 
 const Home = async () => {
   const today = new Date(2024, 5, 2, 11)

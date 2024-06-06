@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import db from "prisma/db"
+import db from "@/configs/db"
 import { formatTime } from "@/lib/utils"
 import { format } from "date-fns"
 
