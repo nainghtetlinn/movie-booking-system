@@ -13,21 +13,15 @@ import { Headset, Menu, ShoppingCart, Ticket } from "lucide-react"
 import Link from "next/link"
 import Profile from "@/components/Profile"
 
-import { useScrollDirection } from "@/hooks/useScrollDirection"
 import clsx from "clsx"
 import { usePathname } from "next/navigation"
 
 const Nav = () => {
   const path = usePathname()
-  const direction = useScrollDirection()
 
   return (
     <>
-      <nav
-        className={clsx(
-          "sticky left-0 right-0 top-0 z-50 border-b bg-background transition-[padding] duration-500",
-          direction == "up" && "py-4",
-        )}>
+      <nav className="sticky left-0 right-0 top-0 z-50 border-b bg-background py-2">
         <div className="container flex items-center justify-between py-2">
           <h4 className="text-lg font-semibold">
             <Link href="/">Movie Booking System</Link>
