@@ -1,10 +1,9 @@
-import { Role } from "@prisma/client"
-import { type NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth"
+import Credentials from "next-auth/providers/credentials"
 
+import { Role } from "@/generated/prisma/client"
 import logger from "@/lib/logger"
 import { comparePassword, hashPassword } from "@/lib/password"
-import { getServerSession } from "next-auth"
 import db, { exclude } from "@/configs/db"
 
 declare module "next-auth" {
@@ -31,8 +30,8 @@ declare module "next-auth/jwt" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 24 * 60 * 60,
@@ -41,7 +40,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   providers: [
-    CredentialsProvider({
+    Credentials({
       credentials: {
         username: {
           label: "Username",
@@ -55,29 +54,34 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          if (!credentials?.username || !credentials.password) throw Error("Invalid inputs.")
+          const username = credentials?.username
+          const password = credentials?.password
+          if (typeof username !== "string" || typeof password !== "string") {
+            throw Error("Invalid inputs.")
+          }
 
-          const user = await db.user.findUnique({ where: { username: credentials.username } })
+          const user = await db.user.findUnique({ where: { username } })
 
           if (user == null) {
             if (
-              credentials.username === process.env.ADMIN_USERNAME &&
-              credentials.password === process.env.ADMIN_PASSWORD
+              username === process.env.ADMIN_USERNAME &&
+              password === process.env.ADMIN_PASSWORD
             ) {
-              const hashedPassword = await hashPassword(credentials.password)
+              const hashedPassword = await hashPassword(password)
               return await db.user.create({
-                data: { username: credentials.username, password: hashedPassword, role: "admin" },
+                data: { username, password: hashedPassword, role: "admin" },
               })
             } else throw Error("User not found.")
           }
 
-          const match = await comparePassword(credentials.password, user.password)
+          const match = await comparePassword(password, user.password)
 
           if (match) return exclude(user, "password")
           else throw Error("Invalid credentials.")
-        } catch (error: any) {
-          logger.error("Error: ", error.message)
-          throw new Error(error.message)
+        } catch (error: unknown) {
+          const message = error instanceof Error ? error.message : "Unknown error"
+          logger.error("Error: ", message)
+          throw new Error(message)
         }
       },
     }),
@@ -100,10 +104,10 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-}
+})
 
 export const checkPermission = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   if (session?.user.role === "admin" || session?.user.role === "staff") return true
   return false
 }

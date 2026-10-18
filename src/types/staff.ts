@@ -1,5 +1,5 @@
 import { staffSchema } from "@/validators/staff"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { z } from "zod"
 
 export type TStaff = z.infer<typeof staffSchema>

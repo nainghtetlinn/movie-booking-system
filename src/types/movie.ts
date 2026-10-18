@@ -1,5 +1,5 @@
 import { movieSchema } from "@/validators/movie"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { z } from "zod"
 
 export type TMovie = z.infer<typeof movieSchema>

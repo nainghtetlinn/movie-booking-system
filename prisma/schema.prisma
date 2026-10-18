@@ -1,15 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
-}
-
-generator dbml {
-  provider = "prisma-dbml-generator"
-  output   = "./"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {

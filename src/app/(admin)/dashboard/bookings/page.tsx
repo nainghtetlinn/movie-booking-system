@@ -6,12 +6,12 @@ import { redirect } from "next/navigation"
 const Bookings = async ({
   searchParams,
 }: {
-  searchParams: { filter?: "all" | "paid" | "unpaid" }
+  searchParams: Promise<{ filter?: "all" | "paid" | "unpaid" }>
 }) => {
-  if (searchParams.filter && !["all", "paid", "unpaid"].includes(searchParams.filter))
-    redirect("/dashboard/bookings")
+  const { filter } = await searchParams
+  if (filter && !["all", "paid", "unpaid"].includes(filter)) redirect("/dashboard/bookings")
 
-  const bookings = await fetchDashboardBookings(searchParams.filter || "all")
+  const bookings = await fetchDashboardBookings(filter || "all")
 
   return (
     <section className="p-4">

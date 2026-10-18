@@ -16,13 +16,18 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import db from "@/configs/db"
 
-const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: string } }) => {
-  if (!searchParams.bookingId) {
+const SuccessPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ bookingId?: string }>
+}) => {
+  const { bookingId } = await searchParams
+  if (!bookingId) {
     redirect("/booking")
   }
 
   const booking = await db.booking.findUnique({
-    where: { id: searchParams.bookingId },
+    where: { id: bookingId },
     include: { tickets: { include: { seat: true, show: { include: { movie: true } } } } },
   })
 

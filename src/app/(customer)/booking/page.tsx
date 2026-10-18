@@ -7,23 +7,24 @@ import { getMovies, getSeats, getShows } from "@/server-actions/booking"
 const BookingPage = async ({
   searchParams,
 }: {
-  searchParams: { movieId?: string; showId?: string }
+  searchParams: Promise<{ movieId?: string; showId?: string }>
 }) => {
+  const { movieId, showId } = await searchParams
   const qc = new QueryClient()
 
   await qc.prefetchQuery({ queryKey: ["movies"], queryFn: () => getMovies() })
 
-  if (searchParams.movieId) {
+  if (movieId) {
     await qc.prefetchQuery({
-      queryKey: ["movie", searchParams.movieId, "shows"],
-      queryFn: () => getShows(searchParams.movieId!),
+      queryKey: ["movie", movieId, "shows"],
+      queryFn: () => getShows(movieId),
     })
   }
 
-  if (searchParams.showId) {
+  if (showId) {
     await qc.prefetchQuery({
-      queryKey: ["movie", searchParams.movieId, "show", searchParams.showId, "seats"],
-      queryFn: () => getSeats(searchParams.showId!),
+      queryKey: ["movie", movieId, "show", showId, "seats"],
+      queryFn: () => getSeats(showId),
     })
   }
 

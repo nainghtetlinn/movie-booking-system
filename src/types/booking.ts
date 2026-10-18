@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { bookingClientSchema } from "@/validators/booking"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 
 export type TBookingClient = z.infer<typeof bookingClientSchema>
 

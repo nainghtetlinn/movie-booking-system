@@ -1,5 +1,3 @@
-import HeroImage from "public/hero-image.jpg"
-
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -10,7 +8,7 @@ const Hero = () => {
       <section className="relative mb-12 h-[80vh] overflow-hidden">
         <div className="absolute inset-0">
           <span className="sr-only">Background Image</span>
-          <Image src={HeroImage} alt="Hero Image" priority className="h-full w-full object-cover" />
+          <Image src={'/hero-image.jpg'} alt="Hero Image" fill priority className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/90"></div>
         </div>
 

@@ -1,7 +1,5 @@
 "use client"
 
-import PlaceholderUser from "public/placeholder-user.webp"
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -37,8 +35,9 @@ const Profile = () => {
         ) : (
           <div className="relative h-10 w-10 overflow-hidden rounded-full">
             <Image
-              src={PlaceholderUser}
+              src={"/placeholder-user.webp"}
               alt="Unauthenticated User Photo"
+              fill
               className="h-full w-full object-cover"
             />
           </div>

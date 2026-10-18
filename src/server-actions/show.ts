@@ -3,7 +3,7 @@
 import { checkPermission } from "@/configs/auth"
 import { TShow } from "@/types/show"
 import { showSchema } from "@/validators/show"
-import { Prisma, Show } from "@prisma/client"
+import { Prisma, Show } from "@/generated/prisma/client"
 import { revalidatePath } from "next/cache"
 import db from "@/configs/db"
 

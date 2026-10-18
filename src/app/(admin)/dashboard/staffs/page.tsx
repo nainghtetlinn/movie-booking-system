@@ -6,12 +6,12 @@ import { redirect } from "next/navigation"
 const Staffs = async ({
   searchParams,
 }: {
-  searchParams: { filter?: "all" | "admin" | "staff" }
+  searchParams: Promise<{ filter?: "all" | "admin" | "staff" }>
 }) => {
-  if (searchParams.filter && !["all", "admin", "staff"].includes(searchParams.filter))
-    redirect("/dashboard/staffs")
+  const { filter } = await searchParams
+  if (filter && !["all", "admin", "staff"].includes(filter)) redirect("/dashboard/staffs")
 
-  const staffs = await fetchDashboardStaffs(searchParams.filter || "all")
+  const staffs = await fetchDashboardStaffs(filter || "all")
 
   return (
     <>

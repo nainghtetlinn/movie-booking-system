@@ -1,5 +1,5 @@
 import { showSchema } from "@/validators/show"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { z } from "zod"
 
 export type TShow = z.infer<typeof showSchema>

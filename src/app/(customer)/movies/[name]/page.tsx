@@ -15,10 +15,11 @@ import db from "@/configs/db"
 import { formatTime } from "@/lib/utils"
 import { format } from "date-fns"
 
-const MoviePage = async ({ params }: { params: { name: string } }) => {
+const MoviePage = async ({ params }: { params: Promise<{ name: string }> }) => {
+  const { name } = await params
   const movie = await db.movie.findFirst({
     where: {
-      title: params.name.replaceAll("_", " "),
+      title: name.replaceAll("_", " "),
     },
   })
 

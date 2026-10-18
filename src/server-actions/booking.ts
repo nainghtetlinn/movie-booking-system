@@ -3,8 +3,8 @@
 import { checkPermission } from "@/configs/auth"
 import resend from "@/configs/resend"
 import { bookingClientSchema } from "@/validators/booking"
-import { Prisma } from "@prisma/client"
-import SuccessBooking from "emails/success-booking"
+import { Prisma } from "@/generated/prisma/client"
+import SuccessBooking from "@emails/success-booking"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import db from "@/configs/db"
@@ -76,7 +76,7 @@ export async function makeBooking(data: {
 
   // create ticket for each seat
   let totalAmount = 0
-  let tickets: Prisma.TicketCreateManyInput[] = []
+  const tickets: Prisma.TicketCreateManyInput[] = []
   seats.forEach((s) => {
     totalAmount += s.price
     tickets.push({ amount: s.price, bookingId: booking.id, showId: show.id, seatId: s.id })

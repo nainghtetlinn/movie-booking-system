@@ -1,9 +1,8 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/configs/auth"
+import { auth } from "@/configs/auth"
 
 const Profile = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   return (
     <section className="p-4">

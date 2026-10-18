@@ -10,10 +10,10 @@ import {
   Row,
   Column,
   Img,
-} from "@react-email/components"
+} from "react-email"
 
 import { formatShowTime } from "@/lib/utils"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 
 type Booking = Prisma.BookingGetPayload<{
   include: {

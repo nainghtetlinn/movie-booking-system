@@ -3,7 +3,7 @@
 import { checkPermission } from "@/configs/auth"
 import { TMovie } from "@/types/movie"
 import { movieSchema } from "@/validators/movie"
-import { Movie } from "@prisma/client"
+import { Movie } from "@/generated/prisma/client"
 import { revalidatePath } from "next/cache"
 import db from "@/configs/db"
 

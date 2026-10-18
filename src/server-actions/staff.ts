@@ -2,7 +2,7 @@
 
 import { TStaff } from "@/types/staff"
 import { staffSchema } from "@/validators/staff"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { revalidatePath } from "next/cache"
 import db, { exclude } from "@/configs/db"
 import { hashPassword } from "@/lib/password"

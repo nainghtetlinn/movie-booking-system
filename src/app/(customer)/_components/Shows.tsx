@@ -4,7 +4,7 @@ import Carousel from "@/components/Carousel"
 import TitleTypography from "@/components/TitleTypography"
 import { Button } from "@/components/ui/button"
 
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { format } from "date-fns"
 import Image from "next/image"
 import Link from "next/link"

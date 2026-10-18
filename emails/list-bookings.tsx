@@ -12,9 +12,9 @@ import {
   Hr,
   Img,
   Link,
-} from "@react-email/components"
+} from "react-email"
 
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { formatShowTime } from "@/lib/utils"
 
 type Booking = Prisma.BookingGetPayload<{

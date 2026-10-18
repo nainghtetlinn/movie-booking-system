@@ -1,8 +1,14 @@
+import "dotenv/config";
 import { faker } from "@faker-js/faker"
 import bcrypt from "bcrypt"
-import { PrismaClient, Prisma } from "@prisma/client"
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg"
+import { PrismaClient, Prisma } from "@/generated/prisma/client"
 
-const db = new PrismaClient()
+const connectionString = `${process.env.DATABASE_URL}`;
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const db = new PrismaClient({ adapter });
 
 const seedUser = async () => {
   const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10)

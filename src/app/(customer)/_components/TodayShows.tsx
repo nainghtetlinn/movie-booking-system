@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table"
 import TitleTypography from "@/components/TitleTypography"
 
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import Image from "next/image"
 import { format } from "date-fns"
 

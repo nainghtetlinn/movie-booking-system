@@ -1,7 +1,7 @@
 "use server"
 
 import resend from "@/configs/resend"
-import ListBookings from "emails/list-bookings"
+import ListBookings from "@emails/list-bookings"
 import db from "@/configs/db"
 
 export async function listTicekts(email: string) {

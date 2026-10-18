@@ -6,12 +6,12 @@ import { redirect } from "next/navigation"
 const Movies = async ({
   searchParams,
 }: {
-  searchParams: { filter?: "all" | "showing" | "upcoming" }
+  searchParams: Promise<{ filter?: "all" | "showing" | "upcoming" }>
 }) => {
-  if (searchParams.filter && !["all", "showing", "upcoming"].includes(searchParams.filter))
-    redirect("/dashboard/movies")
+  const { filter } = await searchParams
+  if (filter && !["all", "showing", "upcoming"].includes(filter)) redirect("/dashboard/movies")
 
-  const movies = await fetchDashboardMovies(searchParams.filter || "all")
+  const movies = await fetchDashboardMovies(filter || "all")
 
   return (
     <>

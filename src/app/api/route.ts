@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/configs/auth"
+import { auth } from "@/configs/auth"
 
 export async function GET() {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   return NextResponse.json({ authenticated: !!session, result: JSON.stringify(session) })
 }

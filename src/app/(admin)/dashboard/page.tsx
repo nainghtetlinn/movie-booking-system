@@ -6,10 +6,10 @@ import { redirect } from "next/navigation"
 const Dashboard = async ({
   searchParams,
 }: {
-  searchParams: { range?: "day" | "week" | "month" }
+  searchParams: Promise<{ range?: "day" | "week" | "month" }>
 }) => {
-  if (searchParams.range && !["day", "week", "month"].includes(searchParams.range))
-    redirect("/dashboard")
+  const { range } = await searchParams
+  if (range && !["day", "week", "month"].includes(range)) redirect("/dashboard")
 
   return (
     <>
@@ -18,7 +18,7 @@ const Dashboard = async ({
           <h2 className="text-3xl font-bold">Dashboard</h2>
           <Filter searchParamKey="range" defaultOptions="day" options={["day", "week", "month"]} />
         </div>
-        <DashboardGrid range={searchParams.range || "day"} />
+        <DashboardGrid range={range || "day"} />
       </section>
     </>
   )

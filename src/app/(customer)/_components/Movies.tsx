@@ -5,7 +5,7 @@ import TitleTypography from "@/components/TitleTypography"
 import { Button } from "@/components/ui/button"
 
 import { formatTime } from "@/lib/utils"
-import { Movie } from "@prisma/client"
+import { Movie } from "@/generated/prisma/client"
 import { format } from "date-fns"
 import Image from "next/image"
 import Link from "next/link"

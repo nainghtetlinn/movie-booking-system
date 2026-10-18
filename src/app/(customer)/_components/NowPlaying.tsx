@@ -2,7 +2,7 @@ import TitleTypography from "@/components/TitleTypography"
 import Image from "next/image"
 
 import { formatTime } from "@/lib/utils"
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@/generated/prisma/client"
 import { format } from "date-fns"
 
 interface Props {
