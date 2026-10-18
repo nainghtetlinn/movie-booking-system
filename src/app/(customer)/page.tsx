@@ -1,5 +1,3 @@
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { CircleAlert } from "lucide-react"
 import Hero from "./_components/Hero"
 import NowPlaying from "./_components/NowPlaying"
 import TodayShows from "./_components/TodayShows"
@@ -9,7 +7,7 @@ import Movies from "./_components/Movies"
 import db from "@/configs/db"
 
 const Home = async () => {
-  const today = new Date(2024, 5, 2, 11)
+  const today = new Date()
   const startDate = new Date(today)
   startDate.setHours(0, 0, 0, 0)
   const endDate = new Date(today)
@@ -67,13 +65,6 @@ const Home = async () => {
   return (
     <>
       <Hero />
-      <div className="container">
-        <Alert>
-          <CircleAlert className="h-5 w-5" />
-          <AlertTitle>Warning</AlertTitle>
-          <AlertDescription>Today date is hard coded {today.toISOString()}</AlertDescription>
-        </Alert>
-      </div>
       <NowPlaying show={nowPlaying} />
       <TodayShows shows={todayShows} />
       <Movies movies={movies} />

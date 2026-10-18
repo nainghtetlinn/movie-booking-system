@@ -1,5 +1,8 @@
+import { Suspense } from "react"
 import DashboardGrid from "./_components/DashboardGrid"
+import TodayActiveShows from "./_components/TodayActiveShows"
 import Filter from "@/components/Filter"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import { redirect } from "next/navigation"
 
@@ -20,6 +23,22 @@ const Dashboard = async ({
         </div>
         <DashboardGrid range={range || "day"} />
       </section>
+
+      <Suspense
+        fallback={
+          <section className="p-4 pt-0">
+            <Skeleton className="mb-4 h-8 w-64 rounded-lg" />
+            <Skeleton className="h-[200px] rounded-lg" />
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <Skeleton className="h-[220px] rounded-lg" />
+              <Skeleton className="h-[220px] rounded-lg" />
+              <Skeleton className="h-[220px] rounded-lg" />
+              <Skeleton className="h-[220px] rounded-lg" />
+            </div>
+          </section>
+        }>
+        <TodayActiveShows />
+      </Suspense>
     </>
   )
 }

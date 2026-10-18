@@ -5,6 +5,7 @@ import { TShow } from "@/types/show"
 import { showSchema } from "@/validators/show"
 import { Prisma, Show } from "@/generated/prisma/client"
 import { revalidatePath } from "next/cache"
+import { startOfDay, endOfDay } from "date-fns"
 import db from "@/configs/db"
 
 type TReturn = { success: true; data: Show } | { success: false; message: string }
@@ -67,8 +68,8 @@ export async function deleteShow(id: string): Promise<TReturn> {
 
 export const fetchDashboardShows = async (filter: "all" | "showing" | "upcoming") => {
   let where = {}
-  let start = new Date(2024, 5, 2)
-  let end = new Date(2024, 5, 3)
+  const start = startOfDay(new Date())
+  const end = endOfDay(new Date())
 
   if (filter === "showing")
     where = {
