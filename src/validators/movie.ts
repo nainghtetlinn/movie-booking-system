@@ -5,6 +5,13 @@ export const movieSchema = z.object({
   description: z.string().min(1, "Description required."),
   posterUrl: z.string().min(1, "Poster url required."),
   durationInMins: z.coerce.number().gt(0, "Duration must be greater than 0."),
-  releaseDate: z.coerce.date(),
+  releaseDate: z.date({
+    error: (issue) => {
+      if (issue.input === undefined) {
+        return "Date is required."
+      }
+      return "Invalid date."
+    },
+  }),
   genre: z.string(),
 })

@@ -10,7 +10,7 @@ import { format } from "date-fns"
 import { useState } from "react"
 
 interface Props {
-  value: Date
+  value?: Date
   onChange: (value: Date | undefined) => void
 }
 

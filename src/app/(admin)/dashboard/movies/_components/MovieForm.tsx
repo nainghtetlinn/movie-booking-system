@@ -1,106 +1,99 @@
 "use client"
 
 import DatePicker from "@/components/DatePicker"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
-import { TMovie } from "@/types/movie"
-import { UseFormReturn } from "react-hook-form"
+import { Controller, FormProvider, UseFormReturn } from "react-hook-form"
+import { MovieFormInput, MovieFormOutput } from "./movie-hooks"
 
-const MovieForm = ({ form }: { form: UseFormReturn<TMovie> }) => {
+type MovieFormProps = {
+  form: UseFormReturn<MovieFormInput, unknown, MovieFormOutput>
+}
+
+const MovieForm = ({ form }: MovieFormProps) => {
+  const { control } = form
+
   return (
-    <>
-      <Form {...form}>
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <FormProvider {...form}>
+      <Controller
+        control={control}
+        name="title"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel>Title</FieldLabel>
+            <Input {...field} />
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <Controller
+        control={control}
+        name="description"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel>Description</FieldLabel>
+            <Input {...field} />
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="posterUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Poster Url</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <Controller
+        control={control}
+        name="posterUrl"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel>Poster Url</FieldLabel>
+            <Input {...field} />
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="genre"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Genre</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <Controller
+        control={control}
+        name="genre"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel>Genre</FieldLabel>
+            <Input {...field} />
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="durationInMins"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Duration in minute</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value === 0 ? "" : field.value} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <Controller
+        control={control}
+        name="durationInMins"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel>Duration in minute</FieldLabel>
+            <Input
+              type="number"
+              ref={field.ref}
+              value={field.value === 0 ? "" : (field.value as number)}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+            />
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="releaseDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Release date</FormLabel>
-              <DatePicker value={field.value} onChange={field.onChange} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </Form>
-    </>
+      <Controller
+        control={control}
+        name="releaseDate"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel>Release date</FieldLabel>
+            <DatePicker value={field.value as Date} onChange={field.onChange} />
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
+    </FormProvider>
   )
 }
 
