@@ -81,7 +81,16 @@ const EditShowBtn = ({ show, close }: { show: TShowTableItem; close: () => void 
             <DialogDescription>Click save to update show.</DialogDescription>
           </DialogHeader>
 
-          <ShowForm form={form} movies={[{ id: show.movieId, title: show.movie.title }]} />
+          <ShowForm
+            form={form}
+            movies={[
+              {
+                id: show.movieId,
+                title: show.movie.title,
+                durationInMins: show.movie.durationInMins,
+              },
+            ]}
+          />
 
           <DialogFooter>
             <Button disabled={loading} onClick={form.handleSubmit(onSubmit)}>
