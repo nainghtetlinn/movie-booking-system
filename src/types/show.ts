@@ -10,6 +10,7 @@ export type TShowTableItem = Prisma.ShowGetPayload<{
       select: {
         title: true
         posterUrl: true
+        durationInMins: true
       }
     }
     _count: {

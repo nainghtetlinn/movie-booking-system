@@ -82,7 +82,7 @@ export const fetchDashboardShows = async (filter: "all" | "showing" | "upcoming"
 
   return await db.show.findMany({
     include: {
-      movie: { select: { title: true, posterUrl: true } },
+      movie: { select: { title: true, posterUrl: true, durationInMins: true } },
       _count: { select: { tickets: true } },
     },
     where,

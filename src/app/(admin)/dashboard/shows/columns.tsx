@@ -27,6 +27,31 @@ export const columns: ColumnDef<TShowTableItem>[] = [
     id: "title",
     accessorKey: "movie.title",
     header: ({ column }) => <TableSortingBtn title="Title" column={column} />,
+    cell: ({ row }) => {
+      const title: string = row.original.movie.title
+      const durationInMins: number = row.original.movie.durationInMins
+
+      // Helper to format minutes into a readable string (e.g., "2h 15m" or "135 mins")
+      const formatMovieDuration = (mins: number) => {
+        if (!mins) return ""
+        const hours = Math.floor(mins / 60)
+        const minutes = mins % 60
+        if (hours === 0) return `${minutes}m`
+        if (minutes === 0) return `${hours}h`
+        return `${hours}h ${minutes}m`
+      }
+
+      return (
+        <div className="flex flex-col">
+          <span className="font-medium">{title}</span>
+          {durationInMins > 0 && (
+            <span className="text-muted-foreground text-xs">
+              {formatMovieDuration(durationInMins)}
+            </span>
+          )}
+        </div>
+      )
+    },
   },
   {
     accessorKey: "date",
