@@ -11,6 +11,7 @@ const eslintConfig = defineConfig([
     rules: {
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "src/generated/**"]),
