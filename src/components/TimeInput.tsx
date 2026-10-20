@@ -11,7 +11,7 @@ const TimeInput = ({ value, onChange }: Props) => {
   return (
     <Input
       type="time"
-      defaultValue={value ? format(value, "HH:mm") : "00:00"}
+      value={format(value ?? new Date(), "HH:mm")}
       onChange={(e) => {
         if (e.target.value) {
           const [hours, minutes] = e.target.value.split(":")

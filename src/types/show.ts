@@ -18,4 +18,6 @@ export type TShowTableItem = Prisma.ShowGetPayload<{
   }
 }>
 
-export type TShowMovieOptions = Prisma.MovieGetPayload<{ select: { id: true; title: true } }>[]
+export type TShowMovieOptions = Prisma.MovieGetPayload<{
+  select: { id: true; title: true; durationInMins: true }
+}>[]

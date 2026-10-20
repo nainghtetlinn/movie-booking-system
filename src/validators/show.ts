@@ -2,9 +2,30 @@ import { z } from "zod"
 
 export const showSchema = z
   .object({
-    date: z.coerce.date(),
-    startTime: z.coerce.date(),
-    endTime: z.coerce.date(),
+    date: z.date({
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return "Show date is required."
+        }
+        return "Invalid date."
+      },
+    }),
+    startTime: z.date({
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return "Start time is required."
+        }
+        return "Invalid time."
+      },
+    }),
+    endTime: z.date({
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return "End time is required."
+        }
+        return "Invalid time."
+      },
+    }),
     movieId: z.string().min(1, "Movie id required."),
   })
   .transform((val) => {
@@ -25,10 +46,10 @@ export const showSchema = z
     return val
   })
   .superRefine((val, ctx) => {
-    if (val.startTime.getTime() > val.endTime.getTime()) {
+    if (val.endTime.getTime() <= val.startTime.getTime()) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "End time should not be less than Start time.",
+        code: "custom",
+        message: "End time must be greater than Start time.",
         path: ["endTime"],
       })
     }

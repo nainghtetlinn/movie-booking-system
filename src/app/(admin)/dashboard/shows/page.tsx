@@ -15,7 +15,7 @@ const Shows = async ({
   const shows = await fetchDashboardShows(filter || "all")
 
   const movies = await db.movie.findMany({
-    select: { id: true, title: true },
+    select: { id: true, title: true, durationInMins: true },
     orderBy: { title: "asc" },
   })
 

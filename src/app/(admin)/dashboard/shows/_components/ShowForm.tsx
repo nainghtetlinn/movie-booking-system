@@ -2,14 +2,7 @@
 
 import DatePicker from "@/components/DatePicker"
 import TimeInput from "@/components/TimeInput"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
   Select,
   SelectContent,
@@ -18,25 +11,57 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { TShow, TShowMovieOptions } from "@/types/show"
-import { UseFormReturn } from "react-hook-form"
+import { TShowMovieOptions } from "@/types/show"
+import { addMinutes } from "date-fns"
+import { useEffect } from "react"
+import { Controller, FormProvider, UseFormReturn } from "react-hook-form"
+import { ShowFormInput, ShowFormOutput } from "./show-hooks"
 
-const ShowForm = ({ form, movies }: { form: UseFormReturn<TShow>; movies: TShowMovieOptions }) => {
+type ShowFormProps = {
+  form: UseFormReturn<ShowFormInput, unknown, ShowFormOutput>
+  movies: TShowMovieOptions
+}
+
+const ShowForm = ({ form, movies }: ShowFormProps) => {
+  const { control } = form
+  const selectedMovieId = form.watch("movieId")
+  const startTime = form.watch("startTime")
+
+  useEffect(() => {
+    if (!selectedMovieId || !startTime) return
+
+    const movie = movies.find((m) => m.id === selectedMovieId)
+
+    if (!movie || movie.durationInMins === 0) return
+
+    const startDate = new Date(startTime)
+
+    if (!isNaN(startDate.getTime())) {
+      // Add the movie's duration in minutes to the start time
+      const calculatedEndTime = addMinutes(startDate, movie.durationInMins)
+
+      // Update the endTime field in the form
+      form.setValue("endTime", calculatedEndTime, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      })
+    }
+  }, [selectedMovieId, startTime, movies, form])
+
   return (
     <>
-      <Form {...form}>
-        <FormField
-          control={form.control}
+      <FormProvider {...form}>
+        <Controller
+          control={control}
           name="movieId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Movie</FormLabel>
+          render={({ field, fieldState }) => (
+            <Field>
+              <FieldLabel>Movie</FieldLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a movie" />
-                  </SelectTrigger>
-                </FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a movie" />
+                </SelectTrigger>
                 <SelectContent>
                   {movies.map((movie) => (
                     <SelectItem key={movie.id} value={movie.id}>
@@ -45,51 +70,49 @@ const ShowForm = ({ form, movies }: { form: UseFormReturn<TShow>; movies: TShowM
                   ))}
                 </SelectContent>
               </Select>
-              <FormMessage />
-            </FormItem>
+              <FieldError>{fieldState.error?.message}</FieldError>
+            </Field>
           )}
         />
 
-        <FormField
-          control={form.control}
+        <Controller
+          control={control}
           name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date</FormLabel>
+          render={({ field, fieldState }) => (
+            <Field>
+              <FieldLabel>Date</FieldLabel>
               <DatePicker value={field.value} onChange={field.onChange} />
-              <FormMessage />
-            </FormItem>
+              <FieldError>{fieldState.error?.message}</FieldError>
+            </Field>
           )}
         />
 
-        <FormField
-          control={form.control}
+        <Controller
+          control={control}
           name="startTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Start Time</FormLabel>
-              <FormControl>
-                <TimeInput value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+          render={({ field, fieldState }) => (
+            <Field>
+              <FieldLabel>Start Time</FieldLabel>
+              <TimeInput value={field.value} onChange={field.onChange} />
+              <FieldError>{fieldState.error?.message}</FieldError>
+            </Field>
           )}
         />
 
-        <FormField
-          control={form.control}
+        <Controller
+          control={control}
           name="endTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>End Time</FormLabel>
-              <FormControl>
+          render={({ field, fieldState }) => {
+            return (
+              <Field>
+                <FieldLabel>End Time</FieldLabel>
                 <TimeInput value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+                <FieldError>{fieldState.error?.message}</FieldError>
+              </Field>
+            )
+          }}
         />
-      </Form>
+      </FormProvider>
     </>
   )
 }
