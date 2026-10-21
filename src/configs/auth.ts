@@ -1,4 +1,5 @@
-import NextAuth from "next-auth"
+import NextAuth, { type DefaultSession } from "next-auth"
+import "next-auth/jwt"
 import Credentials from "next-auth/providers/credentials"
 
 import { Role } from "@/generated/prisma/client"
@@ -18,7 +19,7 @@ declare module "next-auth" {
       id: string
       username: string
       role: Role
-    }
+    } & DefaultSession["user"]
   }
 }
 

@@ -10,13 +10,12 @@ import SelectMovie from "./selectMovie"
 import SelectSeat from "./selectSeat"
 import SelectShow from "./selectShow"
 
+import { makeBooking } from "@/server-actions/booking"
 import { TBookingClient } from "@/types/booking"
 import { useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import { toast } from "sonner"
-import { makeBooking } from "@/server-actions/booking"
 import { useBookingForm } from "./booking-hooks"
-import { redirect } from "next/navigation"
 
 const BookingForm = () => {
   const searchParams = useSearchParams()
@@ -94,7 +93,7 @@ const BookingForm = () => {
 }
 
 export const steps: {
-  component: JSX.Element
+  component: ReactNode
   title: string
   description: string
   field?: "movieId" | "showId" | "seatIds"
