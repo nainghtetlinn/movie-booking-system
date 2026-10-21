@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import db from "@/configs/db"
-import { startOfDay } from "date-fns"
+import { startOfDay, addDays } from "date-fns"
 
 /**
  * GET /api/cron/refresh-schedule
@@ -12,6 +12,7 @@ import { startOfDay } from "date-fns"
  * 2. Distributes shows evenly across the full 24 hours (back-to-back, no gaps)
  *    → This guarantees there is ALWAYS a show playing, no matter when someone visits
  * 3. Resets all seat statuses back to "available" so the booking flow works
+ * 4. Increments each movie's `releaseDate` by 1 day to keep them looking current
  *
  * Protected by a CRON_SECRET env var so only Vercel Cron (or you) can call it.
  */
@@ -23,16 +24,36 @@ export async function GET(request: Request) {
   }
 
   try {
+    const today = startOfDay(new Date())
+
+    // 1. Refresh all movies: Shift their releaseDate forward by 1 day
+    // We can fetch unique movies linked to shows or update all movies in your catalog
+    const movies = await db.movie.findMany()
+
+    for (const movie of movies) {
+      const currentReleaseDate = new Date(movie.releaseDate)
+      const newReleaseDate = addDays(currentReleaseDate, 1)
+
+      await db.movie.update({
+        where: { id: movie.id },
+        data: {
+          releaseDate: newReleaseDate.toISOString(),
+        },
+      })
+    }
+
+    // 2. Fetch and redistribute shows
     const shows = await db.show.findMany({
       include: { movie: { select: { durationInMins: true } } },
       orderBy: { startTime: "asc" },
     })
 
     if (shows.length === 0) {
-      return NextResponse.json({ message: "No shows found. Nothing to refresh." })
+      return NextResponse.json({
+        message: `Updated ${movies.length} movies' release dates, but no shows found to refresh.`,
+      })
     }
 
-    const today = startOfDay(new Date())
     const MINUTES_IN_DAY = 24 * 60
 
     // Calculate each show's real duration from its movie (fallback: original show duration)
@@ -50,7 +71,7 @@ export async function GET(request: Request) {
 
     let cursor = new Date(today) // starts at midnight
 
-    let updated = 0
+    let updatedShows = 0
     for (let i = 0; i < shows.length; i++) {
       const show = shows[i]
       const slotMinutes = showDurations[i] * scale
@@ -69,17 +90,18 @@ export async function GET(request: Request) {
           endTime: newEndTime.toISOString(),
         },
       })
-      updated++
+      updatedShows++
     }
 
-    // Reset all seat statuses so booking flow works fresh each day
+    // 3. Reset all seat statuses so booking flow works fresh each day
     await db.showSeatRelation.updateMany({
       data: { status: "available" },
     })
 
     return NextResponse.json({
-      message: `Refreshed ${updated} shows. Distributed across 24 hours with no gaps.`,
-      showsUpdated: updated,
+      message: `Refreshed ${movies.length} movies and ${updatedShows} shows. Distributed across 24 hours with no gaps.`,
+      moviesUpdated: movies.length,
+      showsUpdated: updatedShows,
       scaleFactor: Math.round(scale * 100) / 100,
     })
   } catch (error) {
@@ -87,4 +109,3 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Failed to refresh schedule" }, { status: 500 })
   }
 }
-
