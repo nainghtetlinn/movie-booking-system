@@ -1,114 +1,127 @@
-# Movie booking system
+# Movie Booking System
 
-Web based application for online booking.
+A full-stack web application for browsing movies, selecting showtimes, and booking cinema tickets with guest checkout, paired with a role-based admin dashboard for venue management.
+
+---
+
+## Screenshots
+
+### Customer Booking Flow
+
+#### Landing Page
+![Landing Page Screenshot](public/ss1.png)
+
+#### Movie Selection
+![Movie Selection Screenshot](public/ss6.png)
+
+#### Checkout & Confirmation
+![Checkout Screenshot](public/ss7.png)
+
+### Admin Dashboard
+
+#### Overview
+![Dashboard Overview Screenshot](public/ss2.png)
+
+#### Movie Management
+![Dashboard Movie Screenshot](public/ss3.png)
+
+#### Showtime Timelines
+![Dashboard Show Screenshot](public/ss4.png)
+
+#### Staff & Permissions
+![Dashboard Staff Screenshot](public/ss5.png)
+
+---
 
 ## Features
 
-- Booking without needed for an account
-- Admin dashboard
-- Role based permissions
+### Customer Experience
+- **Guest Checkout**: Book tickets directly without needing to register or maintain an account.
+- **Showtime Explorer**: Browse currently screening titles, view synopsis details, and select screening slots.
+- **Automated Email Tickets**: HTML booking receipts and ticket summaries dispatched immediately after purchase via Resend.
+- **Theme Support**: Seamless toggle between light and dark modes with persisted user preference.
 
-## Demo
+### Administration & Operations
+- **Overview Dashboard**: High-level operational metrics covering total bookings, active screenings, and revenue.
+- **Movie Catalog CRUD**: Create, edit, and organize movie listings with media assets, genres, and runtimes.
+- **Showtime Timeline**: Visual scheduling interface to plan hall allocations and prevent overlapping showtimes.
+- **Role-Based Access**: Granular permission boundaries dividing administrators from box-office staff.
+- **Staff Management**: Invite and manage operational staff accounts and assigned roles.
 
-https://moviebookingsystem.vercel.app/
+---
 
-## Run Locally
+## Tech Stack
 
-Clone the project
+- **Framework**: Next.js (App Router), React, TypeScript
+- **Styling & UI**: Tailwind CSS, shadcn/ui
+- **Database & ORM**: PostgreSQL, Prisma
+- **Authentication**: NextAuth.js (role-based credentials)
+- **Validation & Forms**: Zod, React Hook Form
+- **State Management**: TanStack Query (React Query)
+- **Transactional Email**: React Email, Resend
 
-```bash
-  git clone https://github.com/nainghtetlinn/movie-booking-system.git
-```
+---
 
-Go to the project directory
+## Getting Started
 
-```bash
-  cd movie-booking-system
-```
+### Prerequisites
 
-Install dependencies
+- Node.js 18.x or later
+- [pnpm](https://pnpm.io/) (`npm install -g pnpm`)
+- A running PostgreSQL database instance
 
-```bash
-  npm install
-```
+### Installation & Setup
 
-Start the server
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/nainghtetlinn/movie-booking-system.git
+   cd movie-booking-system
+   ```
 
-```bash
-  npm run dev
-```
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
 
-Start the email dev server
+3. **Configure environment variables:**
+   ```bash
+   cp .env.example .env
+   ```
+   Open `.env` and fill in your database credentials and secret keys:
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/movie_booking?schema=public"
+   NEXTAUTH_SECRET="your-generated-secret"
+   NEXTAUTH_URL="http://localhost:3000"
+   RESEND_API_KEY="re_your_resend_api_key"
+   ```
 
-```bash
-  npm run emaildev
-```
+4. **Initialize database schema and seed initial data:**
+   ```bash
+   pnpm run postinstall
+   pnpm run seed
+   ```
 
-Seeding data
+5. **Start the local development server:**
+   ```bash
+   pnpm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-```bash
-  npm run seed
-```
+---
 
-# Project Strucutre
+## Available Scripts
 
-```graphql
-MOVIE_BOOKING_SYSTEM/
-├── prisma/                 # Prisma folder for database schema and seed file
-│   ├── schema.prisma       # Prisma database schema
-│   └── schema.dbml         # Database markup language for schema
-├── emails/                 # Email templates
-├── src/                    # Source code directory
-│   ├── app/
-│   │   ├── (admin)/        # Admin routes group
-│   │   │   ├── dashboard/
-│   │   │   │   ├── bookings/
-│   │   │   │   ├── movies/
-│   │   │   │   ├── profile/
-│   │   │   │   ├── shows/
-│   │   │   │   └── staffs/
-│   │   │   └── login/      # Admin login page
-│   │   ├── (customer)/     # Customer routes group
-│   │   │   ├── booking/
-│   │   │   ├── contact/
-│   │   │   ├── movies/
-│   │   │   ├── success/
-│   │   │   └── tickets/
-│   │   └── api/            # Api routes
-│   ├── components/         # Reusable components
-│   │   └── ui/             # Shadcn UI components
-│   ├── configs/            # Configs folder
-│   ├── hooks/              # Custom hooks
-│   ├── lib/                # Utility functions
-│   ├── providers/          # React context providers
-│   ├── server-actions/     # Server actions
-│   ├── styles/             # CSS files
-│   ├── types/              # Typescript types
-│   ├── validators/         # Zod validation schemas
-│   └── middleware
-└── .env.example            # Example Environment variables
-```
+| Script | Purpose |
+| --- | --- |
+| `pnpm run dev` | Launches the Next.js development server at `localhost:3000` |
+| `pnpm run build` | Compiles and builds the production application |
+| `pnpm run start` | Runs the compiled production build |
+| `pnpm run lint` | Runs ESLint checks across the codebase |
+| `pnpm run seed` | Seeds initial movie, showtime, and staff records |
+| `pnpm run emaildev` | Launches the React Email local preview server |
 
-# Tech Stacks
+---
 
-```
-Language
-└── Typescript
+## License
 
-CSS
-├── Tailwind CSS
-└── Shadcn UI
-
-Backend
-├── NextJs
-├── Prisma
-└── Posgresql
-
-Others
-├── Zod
-├── Next auth
-├── React hook form
-├── React email
-├── React query
-└── React table
-```
+MIT
