@@ -1,7 +1,7 @@
 import ShowsTable from "./ShowsTable"
 
 import db from "@/configs/db"
-import { fetchDashboardShows } from "@/server-actions/show"
+import { fetchDashboardShows, fetchShowsByDate } from "@/server-actions/show"
 import { redirect } from "next/navigation"
 
 const Shows = async ({
@@ -19,10 +19,13 @@ const Shows = async ({
     orderBy: { title: "asc" },
   })
 
+  // Fetch today's shows for the timeline initial state
+  const todayShows = await fetchShowsByDate(new Date())
+
   return (
     <>
       <section className="p-4">
-        <ShowsTable shows={shows} movies={movies} />
+        <ShowsTable shows={shows} movies={movies} todayShows={todayShows} />
       </section>
     </>
   )

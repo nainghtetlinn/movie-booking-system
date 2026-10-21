@@ -4,16 +4,26 @@ import Filter from "@/components/Filter"
 import Table from "@/components/Table"
 import ToggleTableViewBtn from "@/components/ToggleTableViewBtn"
 import CreateShowBtn from "./_components/CreateShowBtn"
+import ShowTimeline from "./_components/ShowTimeline"
 
 import { useTable } from "@/hooks/useTable"
 import { TShowMovieOptions, TShowTableItem } from "@/types/show"
 import { columns } from "./columns"
 
-const ShowsTable = ({ shows, movies }: { shows: TShowTableItem[]; movies: TShowMovieOptions }) => {
+const ShowsTable = ({
+  shows,
+  movies,
+  todayShows,
+}: {
+  shows: TShowTableItem[]
+  movies: TShowMovieOptions
+  todayShows: TShowTableItem[]
+}) => {
   const table = useTable({ data: shows, columns })
 
   return (
     <>
+      <ShowTimeline movies={movies} existingShows={todayShows} />
       <div className="mb-4 flex items-center justify-between">
         <Filter
           searchParamKey="filter"

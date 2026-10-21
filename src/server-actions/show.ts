@@ -66,6 +66,24 @@ export async function deleteShow(id: string): Promise<TReturn> {
   }
 }
 
+export async function fetchShowsByDate(date: Date) {
+  const start = startOfDay(date)
+  const end = endOfDay(date)
+
+  return await db.show.findMany({
+    where: {
+      date: { gte: start.toISOString(), lte: end.toISOString() },
+    },
+    include: {
+      movie: { select: { title: true, posterUrl: true, durationInMins: true } },
+      _count: { select: { tickets: true } },
+    },
+    orderBy: {
+      startTime: "asc",
+    },
+  })
+}
+
 export const fetchDashboardShows = async (filter: "all" | "showing" | "upcoming") => {
   let where = {}
   const start = startOfDay(new Date())
