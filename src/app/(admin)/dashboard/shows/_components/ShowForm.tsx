@@ -23,11 +23,12 @@ type ShowFormProps = {
 }
 
 const ShowForm = ({ form, movies }: ShowFormProps) => {
-  const { control } = form
-  const selectedMovieId = form.watch("movieId")
-  const startTime = form.watch("startTime")
+  const { control, getValues } = form
 
-  useEffect(() => {
+  const updateEndTime = () => {
+    const selectedMovieId = getValues("movieId")
+    const startTime = getValues("startTime")
+
     if (!selectedMovieId || !startTime) return
 
     const movie = movies.find((m) => m.id === selectedMovieId)
@@ -47,7 +48,7 @@ const ShowForm = ({ form, movies }: ShowFormProps) => {
         shouldValidate: true,
       })
     }
-  }, [selectedMovieId, startTime, movies, form])
+  }
 
   return (
     <>
@@ -58,7 +59,12 @@ const ShowForm = ({ form, movies }: ShowFormProps) => {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel>Movie</FieldLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={(val) => {
+                  field.onChange(val)
+                  updateEndTime()
+                }}
+                defaultValue={field.value}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a movie" />
                 </SelectTrigger>
@@ -93,7 +99,13 @@ const ShowForm = ({ form, movies }: ShowFormProps) => {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel>Start Time</FieldLabel>
-              <TimeInput value={field.value} onChange={field.onChange} />
+              <TimeInput
+                value={field.value}
+                onChange={(val) => {
+                  field.onChange(val)
+                  updateEndTime()
+                }}
+              />
               <FieldError>{fieldState.error?.message}</FieldError>
             </Field>
           )}
