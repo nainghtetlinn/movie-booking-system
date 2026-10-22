@@ -23,6 +23,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  console.log("CRON JOB ABLE TO RUN")
+
   try {
     // 1. Shift movie release dates forward by 24 hours (1 day)
     const movies = await db.movie.findMany()
