@@ -24,85 +24,43 @@ export async function GET(request: Request) {
   }
 
   try {
-    const today = startOfDay(new Date())
-
-    // 1. Refresh all movies: Shift their releaseDate forward by 1 day
-    // We can fetch unique movies linked to shows or update all movies in your catalog
+    // 1. Shift movie release dates forward by 24 hours (1 day)
     const movies = await db.movie.findMany()
 
     for (const movie of movies) {
-      const currentReleaseDate = new Date(movie.releaseDate)
-      const newReleaseDate = addDays(currentReleaseDate, 1)
+      const updatedReleaseDate = addDays(new Date(movie.releaseDate), 1)
 
       await db.movie.update({
         where: { id: movie.id },
         data: {
-          releaseDate: newReleaseDate.toISOString(),
+          releaseDate: updatedReleaseDate.toISOString(),
         },
       })
     }
 
-    // 2. Fetch and redistribute shows
-    const shows = await db.show.findMany({
-      include: { movie: { select: { durationInMins: true } } },
-      orderBy: { startTime: "asc" },
-    })
+    // 2. Shift show date, startTime, and endTime forward by 24 hours (1 day)
+    const shows = await db.show.findMany()
 
-    if (shows.length === 0) {
-      return NextResponse.json({
-        message: `Updated ${movies.length} movies' release dates, but no shows found to refresh.`,
-      })
-    }
-
-    const MINUTES_IN_DAY = 24 * 60
-
-    // Calculate each show's real duration from its movie (fallback: original show duration)
-    const showDurations = shows.map((show) => {
-      if (show.movie.durationInMins > 0) return show.movie.durationInMins
-      // Fallback: derive from original startTime/endTime
-      const diffMs = new Date(show.endTime).getTime() - new Date(show.startTime).getTime()
-      return Math.max(Math.round(diffMs / 60000), 30) // at least 30 min
-    })
-
-    const totalDuration = showDurations.reduce((sum, d) => sum + d, 0)
-
-    // Scale factor: stretch or compress so all shows fill exactly 24 hours
-    const scale = MINUTES_IN_DAY / totalDuration
-
-    let cursor = new Date(today) // starts at midnight
-
-    let updatedShows = 0
-    for (let i = 0; i < shows.length; i++) {
-      const show = shows[i]
-      const slotMinutes = showDurations[i] * scale
-
-      const newStartTime = new Date(cursor)
-      const newEndTime = new Date(cursor.getTime() + slotMinutes * 60000)
-
-      // Move cursor to the end of this slot (no gap)
-      cursor = newEndTime
+    for (const show of shows) {
+      const updatedDate = addDays(new Date(show.date), 1)
+      const updatedStartTime = addDays(new Date(show.startTime), 1)
+      const updatedEndTime = addDays(new Date(show.endTime), 1)
 
       await db.show.update({
         where: { id: show.id },
         data: {
-          date: today.toISOString(),
-          startTime: newStartTime.toISOString(),
-          endTime: newEndTime.toISOString(),
+          date: updatedDate.toISOString(),
+          startTime: updatedStartTime.toISOString(),
+          endTime: updatedEndTime.toISOString(),
         },
       })
-      updatedShows++
     }
 
-    // 3. Reset all seat statuses so booking flow works fresh each day
-    await db.showSeatRelation.updateMany({
-      data: { status: "available" },
-    })
-
     return NextResponse.json({
-      message: `Refreshed ${movies.length} movies and ${updatedShows} shows. Distributed across 24 hours with no gaps.`,
+      success: true,
+      message: `Shifted dates forward by 24 hours for ${movies.length} movies and ${shows.length} shows.`,
       moviesUpdated: movies.length,
-      showsUpdated: updatedShows,
-      scaleFactor: Math.round(scale * 100) / 100,
+      showsUpdated: shows.length,
     })
   } catch (error) {
     console.error("Failed to refresh schedule:", error)
