@@ -17,7 +17,9 @@ import { startOfDay, addDays } from "date-fns"
  * Protected by a CRON_SECRET env var so only Vercel Cron (or you) can call it.
  */
 export async function GET(request: Request) {
-  // Verify the request is authorized
+  console.log("CRON job called")
+
+// Verify the request is authorized
   const authHeader = request.headers.get("authorization")
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
